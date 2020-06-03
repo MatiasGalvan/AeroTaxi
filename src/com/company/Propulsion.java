@@ -1,6 +1,7 @@
 package com.company;
 
 public enum Propulsion {
+
     REACCION ("motor a reacción"),
     HELICE ("motor a hélice"),
     PISTON ("motor a pistones");
@@ -10,4 +11,5 @@ public enum Propulsion {
     Propulsion(String propulsion) {
         this.propulsion = propulsion;
     }
+
 }
