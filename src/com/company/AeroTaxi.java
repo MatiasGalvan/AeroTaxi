@@ -47,6 +47,33 @@ public class AeroTaxi {
         }
     }
 
+    // ---------- ABM VUELO ----------
+
+    public void agregarVuelo (Vuelo vuelo) {
+        if(vuelo instanceof Vuelo)
+            listaVuelos.put(vuelo.hashCode(), vuelo);
+    }
+
+    public void eliminarVuelo (Vuelo vuelo) {
+        boolean existe = false;
+        for (Map.Entry<Integer, Vuelo> entry : listaVuelos.entrySet()) {
+            Vuelo v = (Vuelo) entry.getValue();
+            if(v.equals(vuelo)){
+                existe = true;
+            }
+        }
+
+        if(existe){
+            listaVuelos.remove(vuelo.hashCode());
+        }
+        else{
+            System.out.println("El vuelo ingresado no se encuentra registrado.");
+        }
+    }
+
+    // ---------- ABM AVION ----------
+
+
     /*
     * public void agregarVuelo (Vuelo vuelo)
     * public void eliminarVuelo (Vuelo vuelo)

@@ -8,6 +8,7 @@ public class Main {
         Usuario u3 = new Usuario("Romina", "Jara", 30939254, 30);
         Usuario u4 = new Usuario("Lautaro", "Vidal", 30939254, 39);
 
+
         AeroTaxi a = new AeroTaxi();
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);

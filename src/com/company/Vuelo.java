@@ -18,4 +18,6 @@ public class Vuelo {
         this.costoTotal = 0;
         this.avion = null;
     }
+
+
 }
