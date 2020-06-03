@@ -71,16 +71,45 @@ public class AeroTaxi {
         }
     }
 
+    public void listarVuelo (){
+        int i = 0;
+        for (Map.Entry<Integer, Vuelo> entry : listaVuelos.entrySet()) {
+            Vuelo v = entry.getValue();
+            System.out.println( i + ". " + v.getFecha() + " Origen: " + v.getOrigen() + " Destino: " + v.getDestino());
+            i++;
+        }
+    }
+
     // ---------- ABM AVION ----------
 
+    public void agregarAvion (Avion avion) {
+        if(avion instanceof Avion)
+            listaAviones.put(avion.hashCode(), avion);
+    }
 
-    /*
-    * public void agregarVuelo (Vuelo vuelo)
-    * public void eliminarVuelo (Vuelo vuelo)
-    * public void listarVuelos ()
-    *
-    * public void agregarAvion (Avion avion)
-    * public void eliminarAvion (Avion avion)
-    * public void listarAviones ()
-    * */
+    public void eliminarAvion (Avion avion) {
+        boolean existe = false;
+        for (Map.Entry<Integer, Avion> entry : listaAviones.entrySet()) {
+            Avion a = (Avion) entry.getValue();
+            if(a.equals(avion)){
+                existe = true;
+            }
+        }
+
+        if(existe){
+            listaAviones.remove(avion.hashCode());
+        }
+        else{
+            System.out.println("El avion ingresado no se encuentra registrado.");
+        }
+    }
+
+    public void listarAviones (){
+        int i = 0;
+        for (Map.Entry<Integer, Avion> entry : listaAviones.entrySet()) {
+            Avion a = entry.getValue();
+            System.out.println( i + ". " + a);
+            i++;
+        }
+    }
 }

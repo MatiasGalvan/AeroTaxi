@@ -21,5 +21,19 @@ public class Main {
 
         a.listarUsuarios();
 
+        Bronze av1 = new Bronze(100,250,10,1000,Propulsion.HELICE);
+        Silver av2 = new Silver(250,400,10,1200,Propulsion.PISTON);
+        Gold av3 = new Gold(500,500,12,1200,Propulsion.REACCION,true);
+
+        a.agregarAvion(av1);
+        a.agregarAvion(av2);
+        a.agregarAvion(av3);
+
+        a.listarAviones();
+
+        a.eliminarAvion(av3);
+        a.eliminarAvion(av3);
+
+        a.listarAviones();
     }
 }

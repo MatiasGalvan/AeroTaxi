@@ -16,4 +16,5 @@ public abstract class Avion {
         this.tipoPropulsion = tipoPropulsion;
         this.servicioCatering = servicioCatering;
     }
+
 }
