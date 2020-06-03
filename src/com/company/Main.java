@@ -20,6 +20,7 @@ public class Main {
         a.eliminarUsuario(u2);
 
         a.listarUsuarios();
-
+        Menu m = new Menu();
+        m.inicio();
     }
 }

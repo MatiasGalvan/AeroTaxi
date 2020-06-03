@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public Menu() {
+    AeroTaxi sistema;
+
+    public Menu(AeroTaxi sistema) {
+        this.sistema = sistema;
     }
 
     public void inicio () {
@@ -22,12 +25,29 @@ public class Menu {
             case 2:
                 registrarse();
                 break;
+            case 3:
+                salir();
+                break;
         }
     }
 
     public void registrarse () {
+        Usuario usuario = new Usuario();
+        Scanner scan = new Scanner(System.in);
 
+        System.out.println("Ingrese nombre:");
+        usuario.setNombre(scan.nextLine());
+        System.out.println("Ingrese apellido:");
+        usuario.setApellido(scan.nextLine());
+        System.out.println("Ingrese DNI:");
+        usuario.setDni(scan.nextInt());
+        System.out.println("Ingrese edad:");
+        usuario.setEdad(scan.nextInt());
+        sistema.agregarUsuario(usuario);
     }
 
+    public void salir(){
+        System.exit(0);
+    }
 
 }
