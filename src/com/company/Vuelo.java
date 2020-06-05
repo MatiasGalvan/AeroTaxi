@@ -2,13 +2,14 @@ package com.company;
 
 import java.time.LocalDate;
 
-public class Vuelo {
+public class Vuelo{
     private Ciudad origen;
     private Ciudad destino;
     private int cantPasajeros;
     private Avion avion;
     private double costoTotal;
     private LocalDate fecha;
+    private boolean cancelado;
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
         this.origen = origen;
@@ -17,6 +18,7 @@ public class Vuelo {
         this.fecha = fecha;
         this.costoTotal = 0;
         this.avion = null;
+        this.cancelado = false;
     }
 
     public Ciudad getOrigen() {
@@ -67,6 +69,24 @@ public class Vuelo {
         this.fecha = fecha;
     }
 
+    public boolean isCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
+    }
+
+   public boolean similar(Vuelo vuelo) {
+        boolean res = false;
+        if(fecha == vuelo.getFecha()){
+           if(origen == vuelo.getOrigen() && destino == vuelo.getDestino()){
+               res = true;
+           }
+        }
+        return res;
+   }
+
     @Override
     public String toString() {
         return "\nOrigen: " + origen +
@@ -76,4 +96,5 @@ public class Vuelo {
                 "\nCosto Total: " + costoTotal +
                 "\nFecha: " + fecha;
     }
+
 }

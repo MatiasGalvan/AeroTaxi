@@ -1,10 +1,9 @@
 package com.company;
 
 public enum Propulsion {
-
-    REACCION ("motor a reacción"),
-    HELICE ("motor a hélice"),
-    PISTON ("motor a pistones");
+    REACCION ("Motor a reacción"),
+    HELICE ("Motor a hélice"),
+    PISTON ("Motor a pistones");
 
     private final String propulsion;
 
