@@ -37,6 +37,18 @@ public class AeroTaxi {
         }
     }
 
+    public Usuario validarUsuario(int dni){
+        Usuario usuario = new Usuario();
+        int i =0;
+        while(i < listaUsuarios.size() && dni != usuario.getDni()){
+            if(dni == listaUsuarios.get(i).getDni()){
+                usuario = listaUsuarios.get(i);
+            }
+        }
+        return usuario;
+    }
+
+
     // ---------- ABM VUELO ----------
     public void agregarVuelo (Vuelo vuelo) {
         //listaVuelos.add(vuelo);
@@ -81,7 +93,6 @@ public class AeroTaxi {
         }
         return res;
     }
-
     public Vuelo vueloSimilar(Vuelo vuelo){
         Vuelo v = null;
         int i = 0;
@@ -96,7 +107,6 @@ public class AeroTaxi {
         }
         return v;
     }
-
     // ---------- ABM AVION ----------
 
     public void agregarAvion (Avion avion) {
@@ -120,7 +130,6 @@ public class AeroTaxi {
             i++;
         }
     }
-
     public LinkedList<Avion> listarAvionesDisponibles (Vuelo vuelo){
         LinkedList<Avion> disponibles = new LinkedList<>();
         for (Avion avion : listaAviones) {
@@ -129,5 +138,6 @@ public class AeroTaxi {
             }
         }
         return disponibles;
+
     }
 }

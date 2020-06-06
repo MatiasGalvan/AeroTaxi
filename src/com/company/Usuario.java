@@ -7,6 +7,7 @@ public class Usuario {
     private int edad;
     private Avion mejorAvionUsado;
     private double totalGastado;
+    private String contraseña;
 
     public Usuario() {
     }
@@ -18,6 +19,7 @@ public class Usuario {
         this.edad = edad;
         this.mejorAvionUsado = null;
         this.totalGastado = 0;
+        this.contraseña = contraseña;
     }
 
     public String getNombre() {
@@ -50,6 +52,14 @@ public class Usuario {
 
     public void setEdad(int edad) {
         this.edad = edad;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public Avion getMejorAvionUsado() {

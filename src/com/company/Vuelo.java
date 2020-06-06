@@ -96,5 +96,4 @@ public class Vuelo{
                 "\nCosto Total: " + costoTotal +
                 "\nFecha: " + fecha;
     }
-
 }
