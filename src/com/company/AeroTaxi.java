@@ -41,9 +41,7 @@ public class AeroTaxi {
         Usuario usuario = new Usuario();
         int i =0;
         while(i < listaUsuarios.size() && dni != usuario.getDni()){
-            if(dni == listaUsuarios.get(i).getDni()){
-                usuario = listaUsuarios.get(i);
-            }
+            if(dni == listaUsuarios.get(i).getDni()) usuario = listaUsuarios.get(i);
         }
         return usuario;
     }
