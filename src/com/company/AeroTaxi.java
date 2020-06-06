@@ -1,37 +1,28 @@
 package com.company;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 public class AeroTaxi {
-    private HashMap<Integer, Usuario> listaUsuarios;
-    private HashMap<Integer, Vuelo> listaVuelos;
-    private HashMap<Integer, Avion> listaAviones;
+    private LinkedList<Usuario> listaUsuarios;
+    private LinkedList<Vuelo> listaVuelos;
+    private LinkedList<Avion> listaAviones;
 
     public AeroTaxi() {
-        this.listaUsuarios = new HashMap<Integer, Usuario>();
-        this.listaVuelos = new HashMap<Integer, Vuelo>();
-        this.listaAviones = new HashMap<Integer, Avion>();
+        this.listaUsuarios = new LinkedList<>();
+        this.listaVuelos = new LinkedList<>();
+        this.listaAviones = new LinkedList<>();
     }
 
     // ---------- ABM USUARIO ----------
 
     public void agregarUsuario (Usuario usuario) {
         if(usuario instanceof Usuario)
-            listaUsuarios.put(usuario.getDni(), usuario);
+            listaUsuarios.add(usuario);
     }
 
     public void eliminarUsuario (Usuario usuario) {
-        boolean existe = false;
-        for (Map.Entry<Integer, Usuario> entry : listaUsuarios.entrySet()) {
-            Usuario u = (Usuario) entry.getValue();
-            if(u.equals(usuario)){
-                existe = true;
-            }
-        }
-
-        if(existe){
-            listaUsuarios.remove(usuario.getDni());
+        if(listaUsuarios.contains(usuario)){
+            listaUsuarios.remove(usuario);
         }
         else{
             System.out.println("El usuario ingresado no se encuentra registrado.");
@@ -40,47 +31,103 @@ public class AeroTaxi {
 
     public void listarUsuarios (){
         int i = 0;
-        for (Map.Entry<Integer, Usuario> entry : listaUsuarios.entrySet()) {
-            Usuario u = entry.getValue();
-            System.out.println( i + ". " + u.getNombre() + " " + u.getApellido());
+        for (Usuario usuario : listaUsuarios) {
+            System.out.println( i + ". " + usuario.getNombre() + " " + usuario.getApellido());
             i++;
         }
     }
 
     // ---------- ABM VUELO ----------
-
     public void agregarVuelo (Vuelo vuelo) {
-        if(vuelo instanceof Vuelo)
-            listaVuelos.put(vuelo.hashCode(), vuelo);
+        //listaVuelos.add(vuelo);
+        if(validarVuelo(vuelo)) {
+            Vuelo v = vueloSimilar(vuelo);
+            if(v != null){
+                /*Aca deberia preguntar al usuario si quiere aceptar ese vuelo, darle la informacion del costo y
+                de que categoria es el avion que realiza ese vuelo. Tambien tener en cuenta que podria haber mas de un
+                vuelo similar por lo que se podria implementar una lista de vuelos similares en lugar de buscar un solo
+                vuelo
+                 */
+                v.setCantPasajeros(v.getCantPasajeros() + vuelo.getCantPasajeros());
+            }
+            else {
+                listaVuelos.add(vuelo);
+            }
+        }
     }
 
     public void eliminarVuelo (Vuelo vuelo) {
-        boolean existe = false;
-        for (Map.Entry<Integer, Vuelo> entry : listaVuelos.entrySet()) {
-            Vuelo v = (Vuelo) entry.getValue();
-            if(v.equals(vuelo)){
-                existe = true;
-            }
-        }
-
-        if(existe){
-            listaVuelos.remove(vuelo.hashCode());
+        if(listaVuelos.contains(vuelo)){
+            listaVuelos.remove(vuelo);
         }
         else{
             System.out.println("El vuelo ingresado no se encuentra registrado.");
         }
     }
 
+    public void listarVuelos (){
+        int i = 0;
+        for (Vuelo vuelo : listaVuelos) {
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino());
+            i++;
+        }
+    }
+
+    public boolean validarVuelo(Vuelo vuelo){
+        boolean res = true;
+        if(vuelo.getOrigen() == vuelo.getDestino()){
+            res = false;
+            System.out.println("El origen y destino no pueden ser iguales.");
+        }
+        return res;
+    }
+
+    public Vuelo vueloSimilar(Vuelo vuelo){
+        Vuelo v = null;
+        int i = 0;
+        while (v == null && i < listaVuelos.size()){
+            Vuelo aux = listaVuelos.get(i);
+            if(aux.similar(vuelo)) {
+                if(aux.getCantPasajeros()+vuelo.getCantPasajeros() < aux.getAvion().getCapacidadMaxPasajeros()){
+                    v = aux;
+                }
+            }
+            i++;
+        }
+        return v;
+    }
+
     // ---------- ABM AVION ----------
 
+    public void agregarAvion (Avion avion) {
+        if(avion instanceof Avion)
+            listaAviones.add(avion);
+    }
 
-    /*
-    * public void agregarVuelo (Vuelo vuelo)
-    * public void eliminarVuelo (Vuelo vuelo)
-    * public void listarVuelos ()
-    *
-    * public void agregarAvion (Avion avion)
-    * public void eliminarAvion (Avion avion)
-    * public void listarAviones ()
-    * */
+    public void eliminarAvion (Avion avion) {
+        if(listaAviones.contains(avion)){
+            listaAviones.remove(avion);
+        }
+        else{
+            System.out.println("El avion ingresado no se encuentra registrado.");
+        }
+    }
+
+    public void listarAviones (){
+        int i = 0;
+        for (Avion avion : listaAviones) {
+            System.out.println( i + ". " + avion);
+            i++;
+        }
+    }
+
+    public LinkedList<Avion> listarAvionesDisponibles (Vuelo vuelo){
+        LinkedList<Avion> disponibles = new LinkedList<>();
+        for (Avion avion : listaAviones) {
+            if(avion.disponibilidad(vuelo)){
+                disponibles.add(avion);
+            }
+        }
+        return disponibles;
+    }
 }

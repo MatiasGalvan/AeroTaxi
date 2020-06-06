@@ -3,9 +3,15 @@ package com.company;
 public class Gold extends Avion {
     private boolean conexionWifi;
 
-    public Gold(int capacidadCombustible, double costoKm, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, boolean conexionWifi) {
-        super(capacidadCombustible, costoKm, capacidadMaxPasajeros, velocidadMaxima, tipoPropulsion, true);
-        this.conexionWifi = conexionWifi;
+    public Gold(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, Ciudad actual) {
+        super(capacidadCombustible, capacidadMaxPasajeros, velocidadMaxima, tipoPropulsion, true, actual);
+        this.conexionWifi = conexionWifi();
     }
 
+    public boolean conexionWifi(){
+        boolean res = false;
+        if(Math.random()*10+1 > 5 )
+            res = true;
+        return res;
+    }
 }
