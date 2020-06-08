@@ -2,7 +2,6 @@ package com.company;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public abstract class Avion {
@@ -65,6 +64,10 @@ public abstract class Avion {
         reservas.put(vuelo.getFecha(), vuelo);
     }
 
+    public void eliminarReserva(Vuelo vuelo) {
+        reservas.remove(vuelo.getFecha());
+    }
+
     public void listarReservas(){
         int i = 0;
         for (Map.Entry<LocalDate, Vuelo> entry : reservas.entrySet()) {
@@ -110,11 +113,10 @@ public abstract class Avion {
 
     @Override
     public String toString() {
-        return "Avion{" +
-                "costoKm=" + costoKm +
-                ", capacidadMaxPasajeros=" + capacidadMaxPasajeros +
-                ", servicioCatering=" + servicioCatering +
-                ", actual=" + actual +
-                '}';
+        return "Avion" +
+                "\nCosto por Km: " + costoKm +
+                "\nCapacidad maxima de pasajeros: " + capacidadMaxPasajeros +
+                "\nServicio de catering: " + servicioCatering +
+                "\nActual: " + actual;
     }
 }

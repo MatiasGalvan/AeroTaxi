@@ -1,6 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class Vuelo{
     private Ciudad origen;
@@ -10,6 +11,7 @@ public class Vuelo{
     private double costoTotal;
     private LocalDate fecha;
     private boolean cancelado;
+    private HashMap<Usuario, Integer> pasajeros;
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
         this.origen = origen;
@@ -19,6 +21,7 @@ public class Vuelo{
         this.costoTotal = 0;
         this.avion = null;
         this.cancelado = false;
+        this.pasajeros = new HashMap<>();
     }
 
     public Ciudad getOrigen() {
@@ -86,6 +89,33 @@ public class Vuelo{
         }
         return res;
    }
+
+   public void agregarPasajeros(Usuario usuario, int cantidad){
+        if(cantPasajeros + cantidad < avion.getCapacidadMaxPasajeros()){
+            cantPasajeros += cantidad;
+            pasajeros.put(usuario, cantidad);
+        }
+    }
+
+    public void eliminarPasajeros(Usuario usuario){
+        cantPasajeros -= pasajeros.get(usuario);
+        pasajeros.remove(usuario);
+    }
+
+    public boolean cancelarVuelo (Usuario usuario){
+        boolean res = false;
+        if(Main.horaActual().isBefore(fecha) && pasajeros.containsKey(usuario)){
+            if(cantPasajeros - pasajeros.get(usuario) > 0){
+                eliminarPasajeros(usuario);
+            }
+            else {
+                cancelado = true;
+                avion.eliminarReserva(this);
+                res = true;
+            }
+        }
+        return res;
+    }
 
     @Override
     public String toString() {

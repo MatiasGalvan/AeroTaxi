@@ -51,21 +51,7 @@ public class AeroTaxi {
 
     // ---------- ABM VUELO ----------
     public void agregarVuelo (Vuelo vuelo) {
-        //listaVuelos.add(vuelo);
-        if(validarVuelo(vuelo)) {
-            Vuelo v = vueloSimilar(vuelo);
-            if(v != null){
-                /*Aca deberia preguntar al usuario si quiere aceptar ese vuelo, darle la informacion del costo y
-                de que categoria es el avion que realiza ese vuelo. Tambien tener en cuenta que podria haber mas de un
-                vuelo similar por lo que se podria implementar una lista de vuelos similares en lugar de buscar un solo
-                vuelo
-                 */
-                v.setCantPasajeros(v.getCantPasajeros() + vuelo.getCantPasajeros());
-            }
-            else {
-                listaVuelos.add(vuelo);
-            }
-        }
+            listaVuelos.add(vuelo);
     }
 
     public void eliminarVuelo (Vuelo vuelo) {
@@ -93,19 +79,19 @@ public class AeroTaxi {
         }
         return res;
     }
-    public Vuelo vueloSimilar(Vuelo vuelo){
-        Vuelo v = null;
+    public LinkedList<Vuelo> vuelosSimilares(Vuelo vuelo){
+        LinkedList<Vuelo> vuelos = new LinkedList<>();
         int i = 0;
-        while (v == null && i < listaVuelos.size()){
+        while (i < listaVuelos.size()){
             Vuelo aux = listaVuelos.get(i);
             if(aux.similar(vuelo)) {
                 if(aux.getCantPasajeros()+vuelo.getCantPasajeros() < aux.getAvion().getCapacidadMaxPasajeros()){
-                    v = aux;
+                    vuelos.add(aux);
                 }
             }
             i++;
         }
-        return v;
+        return vuelos;
     }
     // ---------- ABM AVION ----------
 
@@ -138,6 +124,5 @@ public class AeroTaxi {
             }
         }
         return disponibles;
-
     }
 }
