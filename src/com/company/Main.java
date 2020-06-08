@@ -66,7 +66,7 @@ public class Main {
             System.out.println("rE");
         }*/
 
-        Menu m = new Menu();
+        Menu m = new Menu(a);
         m.inicio();
 
     }

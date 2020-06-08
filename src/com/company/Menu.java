@@ -44,7 +44,7 @@ public class Menu {
         do {
             System.out.println("Ingrese DNI:");
             res = scan.nextInt();
-            usuario = sistema.validarUsuario(res);
+            usuario= sistema.validarUsuario(res);
             if(usuario == null) System.out.println("El DNI ingresado no se encuentra en el sistema");
         }while(usuario == null);
 
@@ -78,7 +78,7 @@ public class Menu {
 
     public void menuUsuario() {
         Scanner scan = new Scanner(System.in);
-        int res = 0;
+        int res;
         System.out.println("------------------------------");
         System.out.println("1. Solicitar vuelo");
         System.out.println("2. Cancelar vuelo");
@@ -87,9 +87,10 @@ public class Menu {
         System.out.println("Que quiere hacer?: "); res = scan.nextInt();
         switch (res) {
             case 1:
-
+                //solicitar vuelo
                 break;
             case 2:
+                //cancelar vuelo
                 break;
             case 3:
                 salir();

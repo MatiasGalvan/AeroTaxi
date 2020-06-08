@@ -38,10 +38,11 @@ public class AeroTaxi {
     }
 
     public Usuario validarUsuario(int dni){
-        Usuario usuario = new Usuario();
+        Usuario usuario = null;
         int i =0;
-        while(i < listaUsuarios.size() && dni != usuario.getDni()){
+        while(i < listaUsuarios.size() && usuario == null){
             if(dni == listaUsuarios.get(i).getDni()) usuario = listaUsuarios.get(i);
+            i++;
         }
         return usuario;
     }
