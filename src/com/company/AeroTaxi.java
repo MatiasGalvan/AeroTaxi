@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.exceptions.ContraseñaInvalidaException;
+import com.company.exceptions.UsuarioNoExisteException;
+
 import java.util.LinkedList;
 
 public class AeroTaxi {
@@ -37,14 +40,21 @@ public class AeroTaxi {
         }
     }
 
-    public Usuario validarUsuario(int dni){
+    public Usuario validarUsuario(int dni) throws UsuarioNoExisteException {
         Usuario usuario = null;
         int i =0;
-        while(i < listaUsuarios.size() && usuario == null){
-            if(dni == listaUsuarios.get(i).getDni()) usuario = listaUsuarios.get(i);
+        while(i < this.listaUsuarios.size() && usuario == null){
+            if(listaUsuarios.get(i).getDni() == dni) usuario = listaUsuarios.get(i);
+            else throw new UsuarioNoExisteException();
             i++;
         }
         return usuario;
+    }
+    public boolean validarContraseña(Usuario usuario,String contraseña) throws ContraseñaInvalidaException {
+        boolean flag = false;
+        if(contraseña == usuario.getContraseña()) flag = true;
+        else throw new ContraseñaInvalidaException();
+        return flag;
     }
 
 

@@ -15,11 +15,12 @@ public class Main {
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);
         a.agregarUsuario(u3);
+        a.agregarUsuario(u4);
 
         a.listarUsuarios();
 
-        a.eliminarUsuario(u4);
-        a.eliminarUsuario(u2);
+      /*  a.eliminarUsuario(u4);
+        a.eliminarUsuario(u2);*/
 
         a.listarUsuarios();
 
