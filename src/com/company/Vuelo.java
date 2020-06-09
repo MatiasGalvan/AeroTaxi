@@ -2,25 +2,28 @@ package com.company;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Vuelo{
+    private UUID id;
     private Ciudad origen;
     private Ciudad destino;
     private int cantPasajeros;
     private Avion avion;
     private double costoTotal;
     private LocalDate fecha;
-    private boolean cancelado;
-    private HashMap<Usuario, Integer> pasajeros;
+    public int estado; // -1 cancelado, 0 pendiente, 1 finalizado
+    private HashMap<UUID, Integer> pasajeros; //ID Del usuario
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
+        this.id = UUID.randomUUID();
         this.origen = origen;
         this.destino = destino;
         this.cantPasajeros = cantPasajeros;
         this.fecha = fecha;
         this.costoTotal = 0;
         this.avion = null;
-        this.cancelado = false;
+        this.estado = 0;
         this.pasajeros = new HashMap<>();
     }
 
@@ -72,15 +75,11 @@ public class Vuelo{
         this.fecha = fecha;
     }
 
-    public boolean isCancelado() {
-        return cancelado;
+    public UUID getId() {
+        return id;
     }
 
-    public void setCancelado(boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
-   public boolean similar(Vuelo vuelo) {
+    public boolean similar(Vuelo vuelo) {
         boolean res = false;
         if(fecha == vuelo.getFecha()){
            if(origen == vuelo.getOrigen() && destino == vuelo.getDestino()){
@@ -93,23 +92,21 @@ public class Vuelo{
    public void agregarPasajeros(Usuario usuario, int cantidad){
         if(cantPasajeros + cantidad < avion.getCapacidadMaxPasajeros()){
             cantPasajeros += cantidad;
-            pasajeros.put(usuario, cantidad);
+            pasajeros.put(usuario.getId(), cantidad);
         }
-    }
-
-    public void eliminarPasajeros(Usuario usuario){
-        cantPasajeros -= pasajeros.get(usuario);
-        pasajeros.remove(usuario);
     }
 
     public boolean cancelarVuelo (Usuario usuario){
         boolean res = false;
-        if(Main.horaActual().isBefore(fecha) && pasajeros.containsKey(usuario)){
-            if(cantPasajeros - pasajeros.get(usuario) > 0){
-                eliminarPasajeros(usuario);
+        UUID idUsuario = usuario.getId();
+
+        if(Main.horaActual().isBefore(fecha) && pasajeros.containsKey(idUsuario)){
+            if(cantPasajeros - pasajeros.get(idUsuario) > 0){
+                cantPasajeros -= pasajeros.get(idUsuario);
+                pasajeros.remove(idUsuario);
             }
             else {
-                cancelado = true;
+                estado = -1;
                 avion.eliminarReserva(this);
                 res = true;
             }

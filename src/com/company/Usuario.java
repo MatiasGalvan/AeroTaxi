@@ -1,18 +1,25 @@
 package com.company;
 
+import java.util.LinkedList;
+import java.util.UUID;
+
 public class Usuario {
-    private String nombre;
-    private String apellido;
+    private UUID id;
+    private UUID mejorAvionUsado; //ID del avion
     private int dni;
     private int edad;
-    private Avion mejorAvionUsado;
     private double totalGastado;
+    private String nombre;
+    private String apellido;
     private String contraseña;
+    private LinkedList<UUID> vuelosContratados;
+
 
     public Usuario() {
     }
 
     public Usuario(String nombre, String apellido, int dni, int edad) {
+        this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -20,6 +27,7 @@ public class Usuario {
         this.mejorAvionUsado = null;
         this.totalGastado = 0;
         this.contraseña = contraseña;
+        this.vuelosContratados = new LinkedList<>();
     }
 
     public String getNombre() {
@@ -62,11 +70,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public Avion getMejorAvionUsado() {
+    public UUID getMejorAvionUsado() {
         return mejorAvionUsado;
     }
 
-    public void setMejorAvionUsado(Avion mejorAvionUsado) {
+    public void setMejorAvionUsado(UUID mejorAvionUsado) {
         this.mejorAvionUsado = mejorAvionUsado;
     }
 
@@ -76,6 +84,10 @@ public class Usuario {
 
     public void setTotalGastado(double totalGastado) {
         this.totalGastado = totalGastado;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -36,18 +37,32 @@ public class Main {
         a.agregarAvion(av5);
 
         a.listarAviones();
+
         LocalDate fecha = LocalDate.of(2020,6,10);
         LocalDate fecha2 = LocalDate.of(2020,6,11);
         LocalDate fecha3 = LocalDate.of(2020,6,12);
         Vuelo v1 = new Vuelo(Ciudad.CORDOBA,Ciudad.BSAS,5,fecha);
         Vuelo v2 = new Vuelo(Ciudad.BSAS,Ciudad.SANTIAGO,5,fecha2);
-        Vuelo v3 = new Vuelo(Ciudad.CORDOBA,Ciudad.MONTEVIDEO,5,fecha3);
+        Vuelo v3 = new Vuelo(Ciudad.SANTIAGO,Ciudad.MONTEVIDEO,5,fecha3);
+
+        v1.setAvion(av2);
+        v2.setAvion(av1);
+
+        av1.agregarReserva(v2);
+        av2.agregarReserva(v1);
 
         a.agregarVuelo(v1);
         a.agregarVuelo(v2);
-        a.agregarVuelo(v3);
+
         a.listarVuelos();
 
+        System.out.println("\n\n");
+
+        LinkedList<Avion> disponibles = a.buscarAvionesDisponibles(v3);
+
+        for (Avion avion : disponibles) {
+            System.out.println(avion);
+        }
         /*
         av5.agregarReserva(v1);
         av5.agregarReserva(v3);

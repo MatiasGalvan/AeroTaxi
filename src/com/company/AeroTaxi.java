@@ -1,6 +1,9 @@
 package com.company;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class AeroTaxi {
     private LinkedList<Usuario> listaUsuarios;
@@ -93,6 +96,7 @@ public class AeroTaxi {
         }
         return vuelos;
     }
+
     // ---------- ABM AVION ----------
 
     public void agregarAvion (Avion avion) {
@@ -116,11 +120,54 @@ public class AeroTaxi {
             i++;
         }
     }
-    public LinkedList<Avion> listarAvionesDisponibles (Vuelo vuelo){
+
+    public Vuelo buscarVueloPorID(UUID idVuelo){
+        int i = 0;
+        Vuelo res = null;
+        while (i < listaVuelos.size() && res == null){
+            UUID id = listaVuelos.get(i).getId();
+            System.out.println("holaaaa");
+            if(id.equals(idVuelo)){
+                res = listaVuelos.get(i);
+            }
+            i++;
+        }
+
+        return res;
+    }
+
+    public LinkedList<Avion> buscarAvionesDisponibles (Vuelo vuelo){
         LinkedList<Avion> disponibles = new LinkedList<>();
+        HashMap<LocalDate, UUID> reservas;
         for (Avion avion : listaAviones) {
-            if(avion.disponibilidad(vuelo)){
-                disponibles.add(avion);
+            reservas = avion.getReservas();
+
+            if(!reservas.containsKey(vuelo.getFecha()) && reservas != null) {
+                LocalDate fecha = vuelo.getFecha();
+                boolean vueloAnt = reservas.containsKey(fecha.minusDays(1));
+                boolean vueloSig = reservas.containsKey(fecha.plusDays(1));
+
+                if (vueloAnt && vueloSig) {
+                    Vuelo v1 = buscarVueloPorID(reservas.get(fecha.minusDays(1)));
+                    Vuelo v2 = buscarVueloPorID(reservas.get(fecha.plusDays(1)));
+                    if(v1.getDestino() == vuelo.getOrigen() && vuelo.getDestino() == v2.getOrigen())
+                        disponibles.add(avion);
+                }
+                else if (vueloAnt && !vueloSig) {
+                    Vuelo v = buscarVueloPorID(reservas.get(fecha.minusDays(1)));
+                    if (v.getDestino() == vuelo.getOrigen()) {
+                        disponibles.add(avion);
+                    }
+                }
+                else if (vueloSig && !vueloAnt) {
+                    Vuelo v = buscarVueloPorID(reservas.get(fecha.plusDays(1)));
+                    if (v.getOrigen() == vuelo.getDestino()) {
+                        disponibles.add(avion);
+                    }
+                }
+                else {
+                    disponibles.add(avion);
+                }
             }
         }
         return disponibles;
