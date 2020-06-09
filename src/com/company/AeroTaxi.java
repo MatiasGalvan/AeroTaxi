@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.exceptions.UsuarioNoExisteException;
+
 import java.util.LinkedList;
 
 public class AeroTaxi {
@@ -37,19 +39,49 @@ public class AeroTaxi {
         }
     }
 
-    public Usuario validarUsuario(int dni){
-        Usuario usuario = new Usuario();
+    public Usuario validarUsuario(int dni) throws UsuarioNoExisteException {
+        Usuario usuario = null;
         int i =0;
-        while(i < listaUsuarios.size() && dni != usuario.getDni()){
-            if(dni == listaUsuarios.get(i).getDni()){
-                usuario = listaUsuarios.get(i);
-            }
+        while(i < listaUsuarios.size() && usuario == null){
+            if(listaUsuarios.get(i).getDni() == dni) usuario = this.listaUsuarios.get(i);
+            i++;
         }
+        if(usuario == null) throw new UsuarioNoExisteException();
         return usuario;
     }
-
-
     // ---------- ABM VUELO ----------
+    public void seleccionarOrigen(Vuelo vuelo, int id){
+        switch (id){
+            case 1:
+                vuelo.setOrigen(Ciudad.BSAS);
+                break;
+            case 2:
+                vuelo.setOrigen(Ciudad.CORDOBA);
+                break;
+            case 3:
+                vuelo.setOrigen(Ciudad.SANTIAGO);
+                break;
+            case 4:
+                vuelo.setOrigen(Ciudad.MONTEVIDEO);
+                break;
+        }
+    }
+    public void seleccionarDestino(Vuelo vuelo, int id){
+        switch (id){
+            case 1:
+                vuelo.setDestino(Ciudad.BSAS);
+                break;
+            case 2:
+                vuelo.setDestino(Ciudad.CORDOBA);
+                break;
+            case 3:
+                vuelo.setDestino(Ciudad.SANTIAGO);
+                break;
+            case 4:
+                vuelo.setDestino(Ciudad.MONTEVIDEO);
+                break;
+        }
+    }
     public void agregarVuelo (Vuelo vuelo) {
         //listaVuelos.add(vuelo);
         if(validarVuelo(vuelo)) {

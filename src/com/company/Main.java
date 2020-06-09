@@ -9,19 +9,21 @@ public class Main {
         Usuario u2 = new Usuario("Ramon", "Dominguez", 13359235, 49);
         Usuario u3 = new Usuario("Romina", "Jara", 30939254, 30);
         Usuario u4 = new Usuario("Lautaro", "Vidal", 30939254, 39);
-
-
+    u1.setContraseña("mauroemmi24");
         AeroTaxi a = new AeroTaxi();
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);
         a.agregarUsuario(u3);
-
+        a.agregarUsuario(u4);
         a.listarUsuarios();
 
-        a.eliminarUsuario(u4);
-        a.eliminarUsuario(u2);
+        Menu m = new Menu(a);
+        m.inicio();
 
-        a.listarUsuarios();
+      /*  a.eliminarUsuario(u4);
+        a.eliminarUsuario(u2);*/
+
+     //   a.listarUsuarios();
 
         Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
         Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
@@ -35,7 +37,7 @@ public class Main {
         a.agregarAvion(av4);
         a.agregarAvion(av5);
 
-        a.listarAviones();
+      //  a.listarAviones();
         /*LocalDate fecha = LocalDate.of(2020,6,10);
         LocalDate fecha2 = LocalDate.of(2020,6,11);
         LocalDate fecha3 = LocalDate.of(2020,6,12);
@@ -66,8 +68,6 @@ public class Main {
             System.out.println("rE");
         }*/
 
-        Menu m = new Menu();
-        m.inicio();
 
     }
 }

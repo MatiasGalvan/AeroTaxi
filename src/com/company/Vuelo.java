@@ -11,6 +11,8 @@ public class Vuelo{
     private LocalDate fecha;
     private boolean cancelado;
 
+    public Vuelo(){}
+
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
         this.origen = origen;
         this.destino = destino;
