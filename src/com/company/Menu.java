@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.exceptions.ContraseñaInvalidaException;
 import com.company.exceptions.UsuarioNoExisteException;
 
 import java.util.Scanner;
@@ -41,55 +40,42 @@ public class Menu {
 
     public void ingresar(){
         Scanner scan = new Scanner(System.in);
+        Scanner scanInt = new Scanner(System.in);
+        String contraseña;
         int res=0;
-        boolean flag;
-        String contraseña="";
         Usuario usuario = null;
         while(usuario == null){
             try{
                 System.out.println("Ingrese DNI:");
-                res = scan.nextInt();
+                res = scanInt.nextInt();
                 usuario= sistema.validarUsuario(res);
                 }catch (UsuarioNoExisteException e){
                 System.out.println("El DNI ingresado no se encuentra en el sistema.");
              }
         }
-        while(contraseña != usuario.getContraseña()){
-            try{
-                System.out.println("Ingrese contraseña:");
-                scan.nextLine();
-                contraseña = scan.nextLine();
-                sistema.validarContraseña(usuario,contraseña);
-            }catch (ContraseñaInvalidaException e){
-                System.out.println("La contraseña es incorrecta.");
-            }
-        }
 
-        /*do {
+        do{
             System.out.println("Ingrese contraseña:");
-            scan.nextLine();
             contraseña = scan.nextLine();
-            if(contraseña!= usuario.getContraseña()) System.out.println("La contraseña es incorrecta");
-        }while(contraseña != usuario.getContraseña());*/
+            if(contraseña != usuario.getContraseña()) System.out.println("La contraseña es incorrecta");
+        }while(contraseña != usuario.getContraseña());
+
         menuUsuario();
-
-
-
     }
 
     public void registrarse () {
         Usuario usuario = new Usuario();
         Scanner scan = new Scanner(System.in);
+        Scanner scanInt = new Scanner(System.in);
         System.out.println("Ingrese nombre:");
         usuario.setNombre(scan.nextLine());
         System.out.println("Ingrese apellido:");
         usuario.setApellido(scan.nextLine());
         System.out.println("Ingrese DNI:");
-        usuario.setDni(scan.nextInt());
+        usuario.setDni(scanInt.nextInt());
         System.out.println("Ingrese edad:");
-        usuario.setEdad(scan.nextInt());
+        usuario.setEdad(scanInt.nextInt());
         System.out.println("Ingrese contraseña:");
-        scan.nextLine();
         usuario.setContraseña(scan.nextLine());
         sistema.agregarUsuario(usuario);
         inicio();

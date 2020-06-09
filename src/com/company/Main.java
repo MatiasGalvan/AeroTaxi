@@ -10,7 +10,7 @@ public class Main {
         Usuario u3 = new Usuario("Romina", "Jara", 30939254, 30);
         Usuario u4 = new Usuario("Lautaro", "Vidal", 30939254, 39);
 
-
+        u1.setContraseña("mauroemmi24");
         AeroTaxi a = new AeroTaxi();
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);
@@ -18,6 +18,9 @@ public class Main {
         a.agregarUsuario(u4);
 
         a.listarUsuarios();
+
+        Menu m = new Menu(a);
+        m.inicio();
 
       /*  a.eliminarUsuario(u4);
         a.eliminarUsuario(u2);*/
@@ -67,8 +70,6 @@ public class Main {
             System.out.println("rE");
         }*/
 
-        Menu m = new Menu(a);
-        m.inicio();
 
     }
 }

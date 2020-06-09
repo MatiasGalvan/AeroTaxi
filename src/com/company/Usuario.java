@@ -19,7 +19,6 @@ public class Usuario {
         this.edad = edad;
         this.mejorAvionUsado = null;
         this.totalGastado = 0;
-        this.contraseña = contraseña;
     }
 
     public String getNombre() {
@@ -85,6 +84,7 @@ public class Usuario {
                 "\nDNI: " + dni +
                 "\nEdad: " + edad +
                 "\nMejor avion usado: " + mejorAvionUsado +
-                "\nTotal gastado: " + totalGastado;
+                "\nTotal gastado: " + totalGastado +
+                "\ncontraseña: " + contraseña;
     }
 }
