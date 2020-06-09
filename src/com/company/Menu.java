@@ -3,6 +3,8 @@ package com.company;
 import com.company.exceptions.UsuarioNoExisteException;
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Menu {
 
@@ -53,12 +55,13 @@ public class Menu {
                 System.out.println("El DNI ingresado no se encuentra en el sistema.");
              }
         }
-
+        String prueba = "mauroemmi24";
+        String contraseña2="";
         do{
             System.out.println("Ingrese contraseña:");
             contraseña = scan.nextLine();
-            if(contraseña != usuario.getContraseña()) System.out.println("La contraseña es incorrecta");
-        }while(contraseña != usuario.getContraseña());
+            if(!contraseña.equals(usuario.getContraseña())) System.out.println("La contraseña es incorrecta");
+        }while(!contraseña.equals(usuario.getContraseña()));
 
         menuUsuario();
     }
@@ -96,7 +99,7 @@ public class Menu {
         System.out.println("Que quiere hacer?: "); res = scan.nextInt();
         switch (res) {
             case 1:
-                //solicitar vuelo
+                solicitarVuelo();
                 break;
             case 2:
                 //cancelar vuelo
@@ -105,5 +108,19 @@ public class Menu {
                 salir();
                 break;
         }
+    }
+    public void solicitarVuelo(){
+        Vuelo vuelo = new Vuelo();
+        mostrarCiudades();
+        System.out.println("Seleccione ciudad de origen:");
+        
+    }
+    public void mostrarCiudades(){
+        System.out.println("Ciudades disponibles:");
+        System.out.println("-----------------------");
+        for(Ciudad value: Ciudad.values()){
+            System.out.println("Ciudad="+value.name());
+        }
+        System.out.println("-----------------------");
     }
 }
