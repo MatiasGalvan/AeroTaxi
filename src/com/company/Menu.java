@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.exceptions.UsuarioNoExisteException;
+import java.time.LocalDate;
 
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -111,16 +112,49 @@ public class Menu {
     }
     public void solicitarVuelo(){
         Vuelo vuelo = new Vuelo();
+        Scanner scanInt = new Scanner(System.in);
+        boolean flag;
+        int idOrigen=0;
+        int idDestino=0;
+        int dia=0;
+        int mes=0;
+        int año=0;
+        System.out.println("FECHA:");
+        System.out.println("Ingrese dia:");
+        dia = scanInt.nextInt();
+        System.out.println("Ingrese mes:");
+        mes = scanInt.nextInt();
+        System.out.println("Ingrese año:");
+        año = scanInt.nextInt();
+        LocalDate fecha = LocalDate.of(año,mes,dia);
+        vuelo.setFecha(fecha);
+
         mostrarCiudades();
         System.out.println("Seleccione ciudad de origen:");
-        
+        idOrigen = scanInt.nextInt();
+        sistema.seleccionarOrigen(vuelo,idOrigen);
+
+        do{
+            mostrarCiudades();
+            System.out.println("Seleccione ciudad de destino:");
+            idDestino = scanInt.nextInt();
+            sistema.seleccionarDestino(vuelo,idDestino);
+            flag = sistema.validarVuelo(vuelo);
+        }while(flag != true);
+
+        System.out.println("Indique cantidad de pasajeros:");
+        vuelo.setCantPasajeros(scanInt.nextInt());
     }
+
     public void mostrarCiudades(){
+        int i=1;
         System.out.println("Ciudades disponibles:");
         System.out.println("-----------------------");
         for(Ciudad value: Ciudad.values()){
-            System.out.println("Ciudad="+value.name());
+            System.out.println(i+"."+value.name());
+            i++;
         }
         System.out.println("-----------------------");
     }
+
 }

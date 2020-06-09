@@ -9,13 +9,12 @@ public class Main {
         Usuario u2 = new Usuario("Ramon", "Dominguez", 13359235, 49);
         Usuario u3 = new Usuario("Romina", "Jara", 30939254, 30);
         Usuario u4 = new Usuario("Lautaro", "Vidal", 30939254, 39);
-
+    u1.setContraseña("mauroemmi24");
         AeroTaxi a = new AeroTaxi();
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);
         a.agregarUsuario(u3);
         a.agregarUsuario(u4);
-
         a.listarUsuarios();
 
         Menu m = new Menu(a);
