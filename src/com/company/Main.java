@@ -1,6 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -43,8 +44,35 @@ public class Main {
         LocalDate fecha3 = LocalDate.of(2020,6,12);
         Vuelo v1 = new Vuelo(Ciudad.CORDOBA,Ciudad.BSAS,5,fecha);
         Vuelo v2 = new Vuelo(Ciudad.BSAS,Ciudad.SANTIAGO,5,fecha2);
-        Vuelo v3 = new Vuelo(Ciudad.CORDOBA,Ciudad.MONTEVIDEO,5,fecha3);
+        Vuelo v3 = new Vuelo(Ciudad.SANTIAGO,Ciudad.MONTEVIDEO,5,fecha3);
 
+        v1.setAvion(av2);
+        v2.setAvion(av1);
+
+        av1.agregarReserva(v2);
+        av2.agregarReserva(v1);
+
+        a.agregarVuelo(v1);
+        a.agregarVuelo(v2);
+
+        a.listarVuelos();
+
+        System.out.println("\n\n");
+
+        LinkedList<Avion> disponibles = a.buscarAvionesDisponibles(v3);
+
+        for (Avion avion : disponibles) {
+            System.out.println(avion);
+        }
+
+
+        System.out.println(Ciudad.distanciaKM(Ciudad.SANTIAGO, Ciudad.CORDOBA));
+        System.out.println(Ciudad.distanciaKM(Ciudad.SANTIAGO, Ciudad.BSAS));
+        System.out.println(Ciudad.distanciaKM(Ciudad.CORDOBA, Ciudad.SANTIAGO));
+
+        System.out.println("Tarifa: " + av1.getTarifa() + " Costo por km: " + av1.getCostoKm() + " CantPasajeros: " + v2.getCantPasajeros());
+        System.out.println(v2.calcularCosto());
+        /*
         av5.agregarReserva(v1);
         av5.agregarReserva(v3);
         if(av5.disponibilidad(v2)){
@@ -68,6 +96,12 @@ public class Main {
             System.out.println("rE");
         }*/
 
+        /*Menu m = new Menu();
+        m.inicio();*/
 
+    }
+
+    public static LocalDate fechaActual(){
+        return LocalDate.of(2020,6,8);
     }
 }

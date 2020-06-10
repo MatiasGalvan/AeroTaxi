@@ -1,26 +1,32 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Vuelo{
+    private UUID id;
     private Ciudad origen;
     private Ciudad destino;
     private int cantPasajeros;
     private Avion avion;
     private double costoTotal;
     private LocalDate fecha;
-    private boolean cancelado;
+    public int estado; // -1 cancelado, 0 pendiente, 1 finalizado
+    private HashMap<UUID, Integer> pasajeros; //ID Del usuario
 
     public Vuelo(){}
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
+        this.id = UUID.randomUUID();
         this.origen = origen;
         this.destino = destino;
         this.cantPasajeros = cantPasajeros;
         this.fecha = fecha;
         this.costoTotal = 0;
         this.avion = null;
-        this.cancelado = false;
+        this.estado = 0;
+        this.pasajeros = new HashMap<>();
     }
 
     public Ciudad getOrigen() {
@@ -71,15 +77,11 @@ public class Vuelo{
         this.fecha = fecha;
     }
 
-    public boolean isCancelado() {
-        return cancelado;
+    public UUID getId() {
+        return id;
     }
 
-    public void setCancelado(boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
-   public boolean similar(Vuelo vuelo) {
+    public boolean similar(Vuelo vuelo) {
         boolean res = false;
         if(fecha == vuelo.getFecha()){
            if(origen == vuelo.getOrigen() && destino == vuelo.getDestino()){
@@ -88,6 +90,38 @@ public class Vuelo{
         }
         return res;
    }
+
+   public void agregarPasajeros(Usuario usuario, int cantidad){
+        if(cantPasajeros + cantidad < avion.getCapacidadMaxPasajeros()){
+            cantPasajeros += cantidad;
+            pasajeros.put(usuario.getId(), cantidad);
+        }
+    }
+
+    public boolean cancelarVuelo (Usuario usuario){ //Devuelve si el usuario fue dado de baja del vuelo, no si el vuelo fue cancelado
+        boolean res = false;
+        UUID idUsuario = usuario.getId();
+
+        if(Main.fechaActual().isBefore(fecha) && pasajeros.containsKey(idUsuario)){
+            if(cantPasajeros - pasajeros.get(idUsuario) > 0){
+                cantPasajeros -= pasajeros.get(idUsuario);
+                pasajeros.remove(idUsuario);
+            }
+            else {
+                estado = -1;
+                avion.eliminarReserva(this);
+            }
+            res = true;
+        }
+
+        return res;
+    }
+
+    public double calcularCosto(){
+        double res = 0;
+        res = (Ciudad.distanciaKM(origen, destino) * avion.getCostoKm()) + (cantPasajeros * 3500) + (avion.getTarifa());
+        return  res;
+    }
 
     @Override
     public String toString() {

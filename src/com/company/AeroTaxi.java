@@ -1,8 +1,10 @@
 package com.company;
 
 import com.company.exceptions.UsuarioNoExisteException;
-
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class AeroTaxi {
     private LinkedList<Usuario> listaUsuarios;
@@ -83,24 +85,10 @@ public class AeroTaxi {
         }
     }
     public void agregarVuelo (Vuelo vuelo) {
-        //listaVuelos.add(vuelo);
-        if(validarVuelo(vuelo)) {
-            Vuelo v = vueloSimilar(vuelo);
-            if(v != null){
-                /*Aca deberia preguntar al usuario si quiere aceptar ese vuelo, darle la informacion del costo y
-                de que categoria es el avion que realiza ese vuelo. Tambien tener en cuenta que podria haber mas de un
-                vuelo similar por lo que se podria implementar una lista de vuelos similares en lugar de buscar un solo
-                vuelo
-                 */
-                v.setCantPasajeros(v.getCantPasajeros() + vuelo.getCantPasajeros());
-            }
-            else {
-                listaVuelos.add(vuelo);
-            }
-        }
+            listaVuelos.add(vuelo);
     }
 
-    public void eliminarVuelo (Vuelo vuelo) {
+    public void eliminarVuelo (Vuelo vuelo) { //Cambiarla para que haga baja logica
         if(listaVuelos.contains(vuelo)){
             listaVuelos.remove(vuelo);
         }
@@ -125,20 +113,21 @@ public class AeroTaxi {
         }
         return res;
     }
-    public Vuelo vueloSimilar(Vuelo vuelo){
-        Vuelo v = null;
+    public LinkedList<Vuelo> vuelosSimilares(Vuelo vuelo){
+        LinkedList<Vuelo> vuelos = new LinkedList<>();
         int i = 0;
-        while (v == null && i < listaVuelos.size()){
+        while (i < listaVuelos.size()){
             Vuelo aux = listaVuelos.get(i);
             if(aux.similar(vuelo)) {
                 if(aux.getCantPasajeros()+vuelo.getCantPasajeros() < aux.getAvion().getCapacidadMaxPasajeros()){
-                    v = aux;
+                    vuelos.add(aux);
                 }
             }
             i++;
         }
-        return v;
+        return vuelos;
     }
+
     // ---------- ABM AVION ----------
 
     public void agregarAvion (Avion avion) {
@@ -162,14 +151,55 @@ public class AeroTaxi {
             i++;
         }
     }
-    public LinkedList<Avion> listarAvionesDisponibles (Vuelo vuelo){
+
+    public Vuelo buscarVueloPorID(UUID idVuelo){
+        int i = 0;
+        Vuelo res = null;
+        while (i < listaVuelos.size() && res == null){
+            UUID id = listaVuelos.get(i).getId();
+            if(id.equals(idVuelo)){
+                res = listaVuelos.get(i);
+            }
+            i++;
+        }
+
+        return res;
+    }
+
+    public LinkedList<Avion> buscarAvionesDisponibles (Vuelo vuelo){
         LinkedList<Avion> disponibles = new LinkedList<>();
+        HashMap<LocalDate, UUID> reservas;
         for (Avion avion : listaAviones) {
-            if(avion.disponibilidad(vuelo)){
-                disponibles.add(avion);
+            reservas = avion.getReservas();
+
+            if(!reservas.containsKey(vuelo.getFecha()) && reservas != null) {
+                LocalDate fecha = vuelo.getFecha();
+                boolean vueloAnt = reservas.containsKey(fecha.minusDays(1));
+                boolean vueloSig = reservas.containsKey(fecha.plusDays(1));
+
+                if (vueloAnt && vueloSig) {
+                    Vuelo v1 = buscarVueloPorID(reservas.get(fecha.minusDays(1)));
+                    Vuelo v2 = buscarVueloPorID(reservas.get(fecha.plusDays(1)));
+                    if(v1.getDestino() == vuelo.getOrigen() && vuelo.getDestino() == v2.getOrigen())
+                        disponibles.add(avion);
+                }
+                else if (vueloAnt && !vueloSig) {
+                    Vuelo v = buscarVueloPorID(reservas.get(fecha.minusDays(1)));
+                    if (v.getDestino() == vuelo.getOrigen()) {
+                        disponibles.add(avion);
+                    }
+                }
+                else if (vueloSig && !vueloAnt) {
+                    Vuelo v = buscarVueloPorID(reservas.get(fecha.plusDays(1)));
+                    if (v.getOrigen() == vuelo.getDestino()) {
+                        disponibles.add(avion);
+                    }
+                }
+                else {
+                    disponibles.add(avion);
+                }
             }
         }
         return disponibles;
-
     }
 }

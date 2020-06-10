@@ -2,21 +2,24 @@ package com.company;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class Avion {
+    private UUID id;
     private int capacidadCombustible;
     private int costoKm;
     private int capacidadMaxPasajeros;
+    private int tarifa;
     private double velocidadMaxima;
     private Propulsion tipoPropulsion;
     private boolean servicioCatering;
     private boolean disponible;
     private Ciudad actual;
-    private HashMap<LocalDate, Vuelo> reservas;
+    private HashMap<LocalDate, UUID> reservas;
 
-    public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual) {
+    public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa) {
+        this.id = UUID.randomUUID();
         this.capacidadCombustible = capacidadCombustible;
         this.servicioCatering = servicioCatering;
         this.costoKm = costoKm();
@@ -26,6 +29,7 @@ public abstract class Avion {
         this.disponible = true;
         this.actual = actual;
         this.reservas = new HashMap<>();
+        this.tarifa = tarifa;
     }
 
     public int getCapacidadMaxPasajeros() {
@@ -52,6 +56,18 @@ public abstract class Avion {
         this.actual = actual;
     }
 
+    public int getCostoKm() {
+        return costoKm;
+    }
+
+    public HashMap<LocalDate, UUID> getReservas() {
+        return reservas;
+    }
+
+    public int getTarifa() {
+        return tarifa;
+    }
+
     public int costoKm(){
         int res = 0;
         if(servicioCatering)
@@ -62,59 +78,27 @@ public abstract class Avion {
     }
 
     public void agregarReserva(Vuelo vuelo){
-        reservas.put(vuelo.getFecha(), vuelo);
+        reservas.put(vuelo.getFecha(), vuelo.getId());
+    }
+
+    public void eliminarReserva(Vuelo vuelo) {
+        reservas.remove(vuelo.getFecha());
     }
 
     public void listarReservas(){
         int i = 0;
-        for (Map.Entry<LocalDate, Vuelo> entry : reservas.entrySet()) {
-            Vuelo v = entry.getValue();
-            System.out.println(i + ". " + v.getFecha() + " " + v.getOrigen() + " " + v.getDestino());
+        for (Map.Entry<LocalDate, UUID> entry : reservas.entrySet()) {
+            System.out.println(i + ". Fecha: " + entry.getValue() + " ID de vuelo: " + entry.getKey() );
             i++;
         }
     }
 
-    public boolean disponibilidad (Vuelo vuelo){
-        boolean res = false;
-
-        if(!reservas.containsKey(vuelo.getFecha())) {
-            LocalDate fecha = vuelo.getFecha();
-            boolean vueloAnt = reservas.containsKey(fecha.minusDays(1));
-            boolean vueloSig = reservas.containsKey(fecha.plusDays(1));
-
-            if (vueloAnt && vueloSig) {
-                Vuelo v1 = reservas.get(vuelo.getFecha().minusDays(1));
-                Vuelo v2 = reservas.get(vuelo.getFecha().plusDays(1));
-                if(v1.getDestino() == vuelo.getOrigen() && vuelo.getDestino() == v2.getOrigen())
-                    res = true;
-            }
-            else if (vueloAnt && !vueloSig) {
-                Vuelo v = reservas.get(vuelo.getFecha().minusDays(1));
-                if (v.getDestino() == vuelo.getOrigen()) {
-                    res = true;
-                }
-            }
-            else if (vueloSig && !vueloAnt) {
-                Vuelo v = reservas.get(vuelo.getFecha().plusDays(1));
-                if (v.getOrigen() == vuelo.getDestino()) {
-                    res = true;
-                }
-            }
-            else {
-                res = true;
-            }
-        }
-
-        return res;
-    }
-
     @Override
     public String toString() {
-        return "Avion{" +
-                "costoKm=" + costoKm +
-                ", capacidadMaxPasajeros=" + capacidadMaxPasajeros +
-                ", servicioCatering=" + servicioCatering +
-                ", actual=" + actual +
-                '}';
+        return "Avion" +
+                "\nCosto por Km: " + costoKm +
+                "\nCapacidad maxima de pasajeros: " + capacidadMaxPasajeros +
+                "\nServicio de catering: " + servicioCatering +
+                "\nActual: " + actual;
     }
 }
