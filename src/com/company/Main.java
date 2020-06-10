@@ -63,6 +63,14 @@ public class Main {
         for (Avion avion : disponibles) {
             System.out.println(avion);
         }
+
+
+        System.out.println(Ciudad.distanciaKM(Ciudad.SANTIAGO, Ciudad.CORDOBA));
+        System.out.println(Ciudad.distanciaKM(Ciudad.SANTIAGO, Ciudad.BSAS));
+        System.out.println(Ciudad.distanciaKM(Ciudad.CORDOBA, Ciudad.SANTIAGO));
+
+        System.out.println("Tarifa: " + av1.getTarifa() + " Costo por km: " + av1.getCostoKm() + " CantPasajeros: " + v2.getCantPasajeros());
+        System.out.println(v2.calcularCosto());
         /*
         av5.agregarReserva(v1);
         av5.agregarReserva(v3);
@@ -92,7 +100,7 @@ public class Main {
 
     }
 
-    public static LocalDate horaActual(){
+    public static LocalDate fechaActual(){
         return LocalDate.of(2020,6,8);
     }
 }

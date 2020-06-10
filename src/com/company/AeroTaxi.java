@@ -57,7 +57,7 @@ public class AeroTaxi {
             listaVuelos.add(vuelo);
     }
 
-    public void eliminarVuelo (Vuelo vuelo) {
+    public void eliminarVuelo (Vuelo vuelo) { //Cambiarla para que haga baja logica
         if(listaVuelos.contains(vuelo)){
             listaVuelos.remove(vuelo);
         }
@@ -126,7 +126,6 @@ public class AeroTaxi {
         Vuelo res = null;
         while (i < listaVuelos.size() && res == null){
             UUID id = listaVuelos.get(i).getId();
-            System.out.println("holaaaa");
             if(id.equals(idVuelo)){
                 res = listaVuelos.get(i);
             }

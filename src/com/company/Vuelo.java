@@ -96,11 +96,11 @@ public class Vuelo{
         }
     }
 
-    public boolean cancelarVuelo (Usuario usuario){
+    public boolean cancelarVuelo (Usuario usuario){ //Devuelve si el usuario fue dado de baja del vuelo, no si el vuelo fue cancelado
         boolean res = false;
         UUID idUsuario = usuario.getId();
 
-        if(Main.horaActual().isBefore(fecha) && pasajeros.containsKey(idUsuario)){
+        if(Main.fechaActual().isBefore(fecha) && pasajeros.containsKey(idUsuario)){
             if(cantPasajeros - pasajeros.get(idUsuario) > 0){
                 cantPasajeros -= pasajeros.get(idUsuario);
                 pasajeros.remove(idUsuario);
@@ -108,10 +108,17 @@ public class Vuelo{
             else {
                 estado = -1;
                 avion.eliminarReserva(this);
-                res = true;
             }
+            res = true;
         }
+
         return res;
+    }
+
+    public double calcularCosto(){
+        double res = 0;
+        res = (Ciudad.distanciaKM(origen, destino) * avion.getCostoKm()) + (cantPasajeros * 3500) + (avion.getTarifa());
+        return  res;
     }
 
     @Override
