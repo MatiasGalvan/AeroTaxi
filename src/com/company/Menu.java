@@ -2,10 +2,7 @@ package com.company;
 
 import com.company.exceptions.UsuarioNoExisteException;
 import java.time.LocalDate;
-
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Menu {
 
@@ -132,26 +129,35 @@ public class Menu {
         mostrarCiudades();
         System.out.println("Seleccione ciudad de origen:");
         idOrigen = scanInt.nextInt();
-        sistema.seleccionarOrigen(vuelo,idOrigen);
+        //sistema.seleccionarOrigen(vuelo,idOrigen);
+        vuelo.setOrigen(seleccionar(idOrigen));
 
         do{
             mostrarCiudades();
             System.out.println("Seleccione ciudad de destino:");
             idDestino = scanInt.nextInt();
-            sistema.seleccionarDestino(vuelo,idDestino);
+            //sistema.seleccionarDestino(vuelo,idDestino);
+            vuelo.setDestino(seleccionar(idDestino));
             flag = sistema.validarVuelo(vuelo);
         }while(flag != true);
 
         System.out.println("Indique cantidad de pasajeros:");
         vuelo.setCantPasajeros(scanInt.nextInt());
+
+        System.out.println(vuelo);
+    }
+
+    public Ciudad seleccionar(int id){
+        Ciudad ciudades[] = Ciudad.values();
+        return ciudades[id];
     }
 
     public void mostrarCiudades(){
-        int i=1;
+        int i=0;
         System.out.println("Ciudades disponibles:");
         System.out.println("-----------------------");
         for(Ciudad value: Ciudad.values()){
-            System.out.println(i+"."+value.name());
+            System.out.println(i+". "+value.getNombre());
             i++;
         }
         System.out.println("-----------------------");

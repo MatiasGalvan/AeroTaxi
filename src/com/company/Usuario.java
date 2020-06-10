@@ -17,7 +17,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, int dni, int edad) {
+    public Usuario(String nombre, String apellido, int dni, int edad, String contraseña) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.apellido = apellido;
