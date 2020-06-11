@@ -170,4 +170,13 @@ public class AeroTaxi {
         }
         return disponibles;
     }
+
+    public void cancelarVuelo(Vuelo vuelo, Usuario usuario){
+        if(vuelo.cancelarVuelo(usuario)){
+            System.out.println("El vuelo fue cancelado en su cuenta.");
+        }
+        else{
+            System.out.println("No puede cancelarce el vuelo sin 24hs de anticipacion.");
+        }
+    }
 }

@@ -83,7 +83,7 @@ public class Vuelo{
 
     public boolean similar(Vuelo vuelo) {
         boolean res = false;
-        if(fecha == vuelo.getFecha()){
+        if(fecha.equals(vuelo.getFecha())){
            if(origen == vuelo.getOrigen() && destino == vuelo.getDestino()){
                res = true;
            }

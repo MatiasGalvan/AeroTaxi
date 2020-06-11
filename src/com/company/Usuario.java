@@ -89,6 +89,14 @@ public class Usuario {
         return id;
     }
 
+    public void agregarVueloContratado(UUID vuelo){
+        this.vuelosContratados.add(vuelo);
+    }
+
+    public LinkedList<UUID> getVuelosContratados() {
+        return vuelosContratados;
+    }
+
     @Override
     public String toString() {
         return "\nNombre: '" + nombre + '\'' +
