@@ -4,6 +4,7 @@ import com.company.exceptions.UsuarioNoExisteException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.UUID;
 
 public class AeroTaxi {
@@ -76,7 +77,7 @@ public class AeroTaxi {
     public void listarVuelos (){
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
-            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino());
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado());
             i++;
         }
     }
@@ -200,5 +201,34 @@ public class AeroTaxi {
             usuario.eliminarVueloContratado(vuelo.getId());
         }
         return res;
+    }
+
+    public Usuario buscarUsuarioPorID(UUID idUsuario){
+        int i = 0;
+        Usuario res = null;
+        while (i < listaUsuarios.size() && res == null){
+            UUID id = listaUsuarios.get(i).getId();
+            if(id.equals(idUsuario)){
+                res = listaUsuarios.get(i);
+            }
+            i++;
+        }
+
+        return res;
+    }
+
+    public void actualizar(){
+        for (Vuelo vuelo : listaVuelos) {
+            if(vuelo.getFecha().plusDays(1).equals(Main.fechaActual()) && vuelo.getEstado() == 0){
+                vuelo.setEstado(1);
+                vuelo.getAvion().eliminarReserva(vuelo);
+                vuelo.getAvion().setActual(vuelo.getDestino());
+                HashMap<UUID, Integer> pasajeros = vuelo.getPasajeros();
+                for (Map.Entry<UUID, Integer> entry : pasajeros.entrySet()) {
+                    Usuario u = buscarUsuarioPorID(entry.getKey());
+                    u.eliminarVueloContratado(vuelo.getId());
+                }
+            }
+        }
     }
 }

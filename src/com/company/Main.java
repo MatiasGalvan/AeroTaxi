@@ -16,7 +16,6 @@ public class Main {
         a.agregarUsuario(u2);
         a.agregarUsuario(u3);
         a.agregarUsuario(u4);
-        a.listarUsuarios();
 
         Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
         Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
@@ -50,11 +49,17 @@ public class Main {
 
        // a.listarVuelos();
 
+        a.actualizar();
+
+        a.listarUsuarios();
+        a.listarVuelos();
+        a.listarAviones();
+
         Menu m = new Menu(a);
         m.inicio();
     }
 
     public static LocalDate fechaActual(){
-        return LocalDate.of(2020,6,8);
+        return LocalDate.of(2020,6,11);
     }
 }

@@ -38,6 +38,14 @@ public class Vuelo{
         this.clase = "";
     }
 
+    public HashMap<UUID, Integer> getPasajeros() {
+        return pasajeros;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     public Ciudad getOrigen() {
         return origen;
     }
@@ -96,6 +104,10 @@ public class Vuelo{
 
     public void setClase(String clase) {
         this.clase = clase;
+    }
+
+    public int getEstado() {
+        return estado;
     }
 
     public boolean similar(Vuelo vuelo) {

@@ -118,7 +118,7 @@ public class Menu {
         else {
             for (UUID reserva : reservas) {
                 Vuelo v = sistema.buscarVueloPorID(reserva);
-                System.out.println("Fecha: " + v.getFecha()  + " Origen: " + v.getOrigen().getNombre() + " Destino: " + v.getDestino().getNombre());
+                System.out.println("Fecha: " + v.getFecha() + " Origen: " + v.getOrigen().getNombre() + " Destino: " + v.getDestino().getNombre());
             }
         }
     }

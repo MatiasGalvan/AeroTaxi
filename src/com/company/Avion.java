@@ -14,7 +14,6 @@ public abstract class Avion {
     private double velocidadMaxima;
     private Propulsion tipoPropulsion;
     private boolean servicioCatering;
-    private boolean disponible;
     private Ciudad actual;
     private String clase;
     private HashMap<LocalDate, UUID> reservas;
@@ -27,7 +26,6 @@ public abstract class Avion {
         this.capacidadMaxPasajeros = capacidadMaxPasajeros;
         this.velocidadMaxima = velocidadMaxima;
         this.tipoPropulsion = tipoPropulsion;
-        this.disponible = true;
         this.actual = actual;
         this.reservas = new HashMap<>();
         this.tarifa = tarifa;
@@ -40,14 +38,6 @@ public abstract class Avion {
 
     public void setCapacidadMaxPasajeros(int capacidadMaxPasajeros) {
         this.capacidadMaxPasajeros = capacidadMaxPasajeros;
-    }
-
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
     }
 
     public Ciudad getActual() {
