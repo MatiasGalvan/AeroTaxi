@@ -120,6 +120,20 @@ public class AeroTaxi {
         }
     }
 
+    public Avion buscarAvionPorID(UUID idAvion){
+        int i = 0;
+        Avion res = null;
+        while (i < listaAviones.size() && res == null){
+            UUID id = listaAviones.get(i).getId();
+            if(id.equals(idAvion)){
+                res = listaAviones.get(i);
+            }
+            i++;
+        }
+
+        return res;
+    }
+
     public Vuelo buscarVueloPorID(UUID idVuelo){
         int i = 0;
         Vuelo res = null;

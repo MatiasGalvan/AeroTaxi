@@ -34,9 +34,6 @@ public class Menu {
             case 2:
                 registrarse();
                 break;
-            case 3:
-                salir();
-                break;
         }
     }
 
@@ -62,8 +59,8 @@ public class Menu {
             System.out.println("Ingrese contraseña:");
             contraseña = scan.nextLine();
             pass = contraseña.equals(usuario.getContraseña());
-            if(!pass)
-                System.out.println("La contraseña es incorrecta");
+            if (!pass)
+                System.out.println("La contraseña es incorrecta.");
         } while(!pass);
 
         menuUsuario(usuario);
@@ -87,29 +84,37 @@ public class Menu {
         inicio();
     }
 
-    public void salir(){
-        System.exit(0);
+    public void menuUsuario(Usuario usuario) {
+        int res = 0;
+        do {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("------------------------------");
+            System.out.println("1. Solicitar vuelo");
+            System.out.println("2. Cancelar vuelo");
+            System.out.println("3. Ver reservas");
+            System.out.println("4. Salir");
+            System.out.println("------------------------------");
+            System.out.println("Que quiere hacer?: ");
+            res = scan.nextInt();
+            switch (res) {
+                case 1:
+                    solicitarVuelo(usuario);
+                    break;
+                case 2:
+                    //cancelar vuelo
+                    break;
+                case 3:
+                    verReservas(usuario);
+                    break;
+            }
+        } while(res != 4);
     }
 
-    public void menuUsuario(Usuario usuario) {
-        Scanner scan = new Scanner(System.in);
-        int res;
-        System.out.println("------------------------------");
-        System.out.println("1. Solicitar vuelo");
-        System.out.println("2. Cancelar vuelo");
-        System.out.println("3. Salir");
-        System.out.println("------------------------------");
-        System.out.println("Que quiere hacer?: "); res = scan.nextInt();
-        switch (res) {
-            case 1:
-                solicitarVuelo(usuario);
-                break;
-            case 2:
-                //cancelar vuelo
-                break;
-            case 3:
-                salir();
-                break;
+    public void verReservas(Usuario usuario){
+        LinkedList<UUID> reservas = usuario.getVuelosContratados();
+        for (UUID reserva : reservas) {
+            Vuelo v = sistema.buscarVueloPorID(reserva);
+            System.out.println(v);
         }
     }
 
@@ -133,6 +138,7 @@ public class Menu {
         Scanner scanInt = new Scanner(System.in);
         boolean flag;
         int idOrigen=0, idDestino=0, dia=0, mes=0, año=0, i=0;
+        String clases[] = {"Bronze", "Silver", "Gold"};
 
         System.out.println("FECHA:");
         System.out.println("Ingrese dia:");
@@ -160,35 +166,76 @@ public class Menu {
         System.out.println("Indique cantidad de pasajeros:");
         vuelo.setCantPasajeros(scanInt.nextInt());
 
+        System.out.println("Indique en que clase quiere viajar:");
+        mostrarClases(clases);
+        vuelo.setClase(clases[scanInt.nextInt()]);
+
         LinkedList<Vuelo> vuelos = sistema.vuelosSimilares(vuelo);
         LinkedList<Avion> aviones = sistema.buscarAvionesDisponibles(vuelo);
 
         if(!vuelos.isEmpty()){
-            System.out.println("Vuelos similares encontrados: ");
-            for (Vuelo v : vuelos) {
-                System.out.println(i + ". Origen: " + v.getOrigen().getNombre() +
-                        " Destino: " + v.getDestino().getNombre() +
-                        " Fecha: " + v.getFecha() +
-                        " Costo total: " + v.getCostoTotal() +
-                        " Clase: " + v.getAvion().getClass().getName());
-                i++;
-            }
-            System.out.println("¿Quiere elegir un vuelo o abrir uno nuevo?: ");
+            elegirVuelo(vuelos, usuario, vuelo.getCantPasajeros());
         }
-        if(!aviones.isEmpty()){
-            i = 0;
-            System.out.println("Aviones disponibles encontrados: ");
-            for (Avion avion : aviones) {
-                System.out.println(i + ". Clase: " + avion.getClass().getName() +
-                        " Tarifa de avion: " + avion.getTarifa());
-                i++;
-            }
-            System.out.println("¿Quiere avion quiere contratar?: ");
+        else if(!aviones.isEmpty()){
+            elegirAvion(aviones, vuelo, usuario);
         }
+        else{
+            System.out.println("En este momento no se encuentran vuelos similares, ni aviones disponibles");
+        };
+    }
 
-        //usuario.agregarVueloContratado(vuelo.getId());
+    public void elegirAvion(LinkedList<Avion> aviones, Vuelo vuelo, Usuario usuario){
+        int i = 0, aux = 0;
+        Scanner scanInt = new Scanner(System.in);
+        System.out.println("Aviones disponibles encontrados: ");
+        for (Avion avion : aviones) {
+            System.out.println(i + ". Clase: " + avion.getClase() +
+                    " Tarifa de avion: " + avion.getTarifa() +
+                    " Servicio de catering: " + avion.isServicioCatering());
+            i++;
+        }
+        System.out.println("¿Quiere avion quiere contratar?: ");
+        aux = scanInt.nextInt();
+        if(aux >= 0 && aux < aviones.size()) {
+            Avion a = aviones.get(aux);
+            vuelo.setAvion(a);
+            vuelo.setCostoTotal();
+            System.out.println("El costo del vuelo es de: " + vuelo.getCostoTotal());
+            System.out.println("Ingrese 1 para confirmar la reserva, o 0 para cancelar la operacion.");
+            aux = scanInt.nextInt();
+            if(aux == 1) {
+                a.agregarReserva(vuelo);
+                usuario.agregarVueloContratado(vuelo.getId());
+                sistema.agregarVuelo(vuelo);
+                System.out.println("Reserva completada");
+            }
+        }
+        else
+            System.out.println("Opcion no valida");
+    }
 
-        System.out.println(vuelo);
+    public void elegirVuelo(LinkedList<Vuelo> vuelos, Usuario usuario, int cantPasajeros){
+        int i = 0, aux = 0;
+        Scanner scanInt = new Scanner(System.in);
+        System.out.println("Vuelos similares encontrados: ");
+        for (Vuelo v : vuelos) {
+            System.out.println(i + ". Origen: " + v.getOrigen().getNombre() +
+                    " Destino: " + v.getDestino().getNombre() +
+                    " Fecha: " + v.getFecha() +
+                    " Costo total: " + v.getCostoTotal() +
+                    " Clase: " + v.getAvion().getClase());
+            i++;
+        }
+        System.out.println("¿Que vuelo quiere elegir?: ");
+        aux = scanInt.nextInt();
+        if(aux >= 0 && aux < vuelos.size()) {
+            Vuelo v = vuelos.get(aux);
+            usuario.agregarVueloContratado(v.getId());
+            v.agregarPasajeros(usuario, cantPasajeros);
+            System.out.println("Reserva completada");
+        }
+        else
+            System.out.println("Opcion no valida");
     }
 
     public Ciudad seleccionar(int id){
@@ -197,6 +244,16 @@ public class Menu {
         if(id >= 0 && id < ciudades.length)
             respuesta = ciudades[id];
         return respuesta;
+    }
+
+    public void mostrarClases(String clases[]){
+        int i = 0;
+        System.out.println("-----------------------");
+        for (String clase : clases) {
+            System.out.println(i + ". " + clase);
+            i++;
+        }
+        System.out.println("-----------------------");
     }
 
     public void mostrarCiudades(){

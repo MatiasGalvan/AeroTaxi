@@ -14,8 +14,16 @@ public class Vuelo{
     private LocalDate fecha;
     public int estado; // -1 cancelado, 0 pendiente, 1 finalizado
     private HashMap<UUID, Integer> pasajeros; //ID Del usuario
+    private String clase;
 
-    public Vuelo(){}
+    public Vuelo(){
+        this.id = UUID.randomUUID();
+        this.costoTotal = 0;
+        this.avion = null;
+        this.estado = 0;
+        this.pasajeros = new HashMap<>();
+        this.clase = "";
+    }
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
         this.id = UUID.randomUUID();
@@ -27,6 +35,7 @@ public class Vuelo{
         this.avion = null;
         this.estado = 0;
         this.pasajeros = new HashMap<>();
+        this.clase = "";
     }
 
     public Ciudad getOrigen() {
@@ -65,8 +74,8 @@ public class Vuelo{
         return costoTotal;
     }
 
-    public void setCostoTotal(double costoTotal) {
-        this.costoTotal = costoTotal;
+    public void setCostoTotal() {
+        this.costoTotal = calcularCosto();
     }
 
     public LocalDate getFecha() {
@@ -81,10 +90,18 @@ public class Vuelo{
         return id;
     }
 
+    public String getClase() {
+        return clase;
+    }
+
+    public void setClase(String clase) {
+        this.clase = clase;
+    }
+
     public boolean similar(Vuelo vuelo) {
         boolean res = false;
         if(fecha.equals(vuelo.getFecha())){
-           if(origen == vuelo.getOrigen() && destino == vuelo.getDestino()){
+           if(origen == vuelo.getOrigen() && destino == vuelo.getDestino() && clase.equals(vuelo.getClase())){
                res = true;
            }
         }
@@ -128,7 +145,7 @@ public class Vuelo{
         return "\nOrigen: " + origen +
                 "\nDestino: " + destino +
                 "\nCantidad de pasajeros: " + cantPasajeros +
-                "\nAvion: " + avion +
+                "\nAvion: " + avion.getId() +
                 "\nCosto Total: " + costoTotal +
                 "\nFecha: " + fecha;
     }

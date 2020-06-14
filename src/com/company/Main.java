@@ -29,7 +29,7 @@ public class Main {
         a.agregarAvion(av3);
         a.agregarAvion(av4);
         a.agregarAvion(av5);
-        a.listarAviones();
+        //a.listarAviones();
 
         LocalDate fecha = LocalDate.of(2020,6,10);
         LocalDate fecha2 = LocalDate.of(2020,6,11);
@@ -40,6 +40,10 @@ public class Main {
 
         v1.setAvion(av2);
         v2.setAvion(av1);
+        v1.setCostoTotal();
+        v2.setCostoTotal();
+        v1.setClase(av2.getClase());
+        v2.setClase(av1.getClase());
 
         av1.agregarReserva(v2);
         av2.agregarReserva(v1);
@@ -47,10 +51,10 @@ public class Main {
         a.agregarVuelo(v1);
         a.agregarVuelo(v2);
 
-        a.listarVuelos();
+       // a.listarVuelos();
 
-        /*Menu m = new Menu(a);
-        m.inicio();*/
+        Menu m = new Menu(a);
+        m.inicio();
     }
 
     public static LocalDate fechaActual(){
