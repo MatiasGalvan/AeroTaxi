@@ -45,11 +45,8 @@ public class Main {
         v1.setClase(av2.getClase());
         v2.setClase(av1.getClase());
 
-        av1.agregarReserva(v2);
-        av2.agregarReserva(v1);
-
-        a.agregarVuelo(v1);
-        a.agregarVuelo(v2);
+        a.agregarVuelo(v1, u1);
+        a.agregarVuelo(v2, u2);
 
        // a.listarVuelos();
 

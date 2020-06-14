@@ -101,7 +101,7 @@ public class Menu {
                     solicitarVuelo(usuario);
                     break;
                 case 2:
-                    //cancelar vuelo
+                    cancelarVuelo(usuario);
                     break;
                 case 3:
                     verReservas(usuario);
@@ -112,9 +112,14 @@ public class Menu {
 
     public void verReservas(Usuario usuario){
         LinkedList<UUID> reservas = usuario.getVuelosContratados();
-        for (UUID reserva : reservas) {
-            Vuelo v = sistema.buscarVueloPorID(reserva);
-            System.out.println(v);
+        if(reservas.isEmpty()){
+            System.out.println("Usted no tiene reservas.");
+        }
+        else {
+            for (UUID reserva : reservas) {
+                Vuelo v = sistema.buscarVueloPorID(reserva);
+                System.out.println("Fecha: " + v.getFecha()  + " Origen: " + v.getOrigen().getNombre() + " Destino: " + v.getDestino().getNombre());
+            }
         }
     }
 
@@ -130,7 +135,13 @@ public class Menu {
         System.out.println("Seleccione que vuelo desea cancelar:");
         i = scanInt.nextInt();
         v = sistema.buscarVueloPorID(vuelos.get(i));
-        sistema.cancelarVuelo(v, usuario);
+
+        if(sistema.cancelarVuelo(v, usuario)){
+            System.out.println("El vuelo fue cancelado de su cuenta.");
+        }
+        else{
+            System.out.println("No puede cancelarce el vuelo sin 24hs de anticipacion.");
+        }
     }
 
     public void solicitarVuelo(Usuario usuario){
@@ -204,9 +215,7 @@ public class Menu {
             System.out.println("Ingrese 1 para confirmar la reserva, o 0 para cancelar la operacion.");
             aux = scanInt.nextInt();
             if(aux == 1) {
-                a.agregarReserva(vuelo);
-                usuario.agregarVueloContratado(vuelo.getId());
-                sistema.agregarVuelo(vuelo);
+                sistema.agregarVuelo(vuelo, usuario);
                 System.out.println("Reserva completada");
             }
         }
@@ -230,8 +239,7 @@ public class Menu {
         aux = scanInt.nextInt();
         if(aux >= 0 && aux < vuelos.size()) {
             Vuelo v = vuelos.get(aux);
-            usuario.agregarVueloContratado(v.getId());
-            v.agregarPasajeros(usuario, cantPasajeros);
+            sistema.agregarVueloExistente(v, usuario, cantPasajeros);
             System.out.println("Reserva completada");
         }
         else

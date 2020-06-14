@@ -52,8 +52,16 @@ public class AeroTaxi {
         return usuario;
     }
     // ---------- ABM VUELO ----------
-    public void agregarVuelo (Vuelo vuelo) {
-            listaVuelos.add(vuelo);
+    public void agregarVuelo (Vuelo vuelo, Usuario usuario) {
+        vuelo.getAvion().agregarReserva(vuelo);
+        vuelo.agregarPasajeros(usuario, vuelo.getCantPasajeros());
+        usuario.agregarVueloContratado(vuelo.getId());
+        listaVuelos.add(vuelo);
+    }
+
+    public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
+        usuario.agregarVueloContratado(vuelo.getId());
+        vuelo.agregarPasajeros(usuario, cantPasajeros);
     }
 
     public void eliminarVuelo (Vuelo vuelo) { //Cambiarla para que haga baja logica
@@ -185,12 +193,12 @@ public class AeroTaxi {
         return disponibles;
     }
 
-    public void cancelarVuelo(Vuelo vuelo, Usuario usuario){
+    public boolean cancelarVuelo(Vuelo vuelo, Usuario usuario){
+        boolean res = false;
         if(vuelo.cancelarVuelo(usuario)){
-            System.out.println("El vuelo fue cancelado en su cuenta.");
+            res = true;
+            usuario.eliminarVueloContratado(vuelo.getId());
         }
-        else{
-            System.out.println("No puede cancelarce el vuelo sin 24hs de anticipacion.");
-        }
+        return res;
     }
 }

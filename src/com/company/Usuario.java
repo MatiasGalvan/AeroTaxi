@@ -93,6 +93,18 @@ public class Usuario {
         this.vuelosContratados.add(vuelo);
     }
 
+    public void eliminarVueloContratado(UUID vuelo){
+        int i = 0;
+        boolean flag = false;
+
+        while(i < vuelosContratados.size() && flag == false){
+            if( vuelosContratados.get(i).equals(vuelo)){
+                this.vuelosContratados.remove(vuelo);
+                flag = true;
+            }
+        }
+    }
+
     public LinkedList<UUID> getVuelosContratados() {
         return vuelosContratados;
     }
