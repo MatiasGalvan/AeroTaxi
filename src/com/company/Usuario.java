@@ -112,7 +112,6 @@ public class Usuario {
 
     public void agregarVueloContratado(Vuelo vuelo){
         this.vuelosContratados.add(vuelo.getId());
-        this.totalGastado += vuelo.getCostoTotal();
     }
 
     public void eliminarVueloContratado(UUID vuelo){
@@ -125,6 +124,10 @@ public class Usuario {
                 flag = true;
             }
         }
+    }
+
+    public void gastado(double costo){
+        totalGastado += costo;
     }
 
     public LinkedList<UUID> getVuelosContratados() {

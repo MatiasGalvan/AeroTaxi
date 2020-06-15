@@ -37,7 +37,10 @@ public class AeroTaxi {
     public void listarUsuarios (){
         int i = 0;
         for (Usuario usuario : listaUsuarios) {
-            System.out.println( i + ". " + usuario.getNombre() + " " + usuario.getApellido());
+            System.out.println( i + ". " + usuario.getNombre() + " " + usuario.getApellido() +
+                    "\n DNI: " + usuario.getDni() + " Gasto total: " + usuario.getTotalGastado() +
+                    " Mejor avion usado: " + usuario.getMejorAvionUsado()
+            );
             i++;
         }
     }
@@ -78,6 +81,16 @@ public class AeroTaxi {
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
             System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
+            i++;
+        }
+    }
+
+    public void listarVuelosPorFecha (LocalDate fecha){
+        int i = 0;
+        for (Vuelo vuelo : listaVuelos) {
+            if(vuelo.getFecha().isEqual(fecha)) {
+                System.out.println(i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
+            }
             i++;
         }
     }
@@ -226,6 +239,7 @@ public class AeroTaxi {
                 HashMap<UUID, Integer> pasajeros = vuelo.getPasajeros();
                 for (Map.Entry<UUID, Integer> entry : pasajeros.entrySet()) {
                     Usuario u = buscarUsuarioPorID(entry.getKey());
+                    u.gastado(vuelo.getCostoTotal());
                     u.eliminarVueloContratado(vuelo.getId());
                 }
             }
