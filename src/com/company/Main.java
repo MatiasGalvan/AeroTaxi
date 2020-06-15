@@ -57,9 +57,13 @@ public class Main {
 
         Menu m = new Menu(a);
         m.inicio();
+
+        a.listarUsuarios();
+        a.listarVuelos();
+        a.listarAviones();
     }
 
     public static LocalDate fechaActual(){
-        return LocalDate.of(2020,6,11);
+        return LocalDate.of(2020,6,12);
     }
 }

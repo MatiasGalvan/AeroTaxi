@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Usuario {
     private UUID id;
-    private UUID mejorAvionUsado; //ID del avion
+    private Clase mejorAvionUsado; //ID del avion
     private int dni;
     private int edad;
     private double totalGastado;
@@ -69,11 +69,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public UUID getMejorAvionUsado() {
+    public Clase getMejorAvionUsado() {
         return mejorAvionUsado;
     }
 
-    public void setMejorAvionUsado(UUID mejorAvionUsado) {
+    public void setMejorAvionUsado(Clase mejorAvionUsado) {
         this.mejorAvionUsado = mejorAvionUsado;
     }
 
@@ -89,8 +89,30 @@ public class Usuario {
         return id;
     }
 
-    public void agregarVueloContratado(UUID vuelo){
-        this.vuelosContratados.add(vuelo);
+    public void mejorAvion(Clase clase){
+        Clase clases[] = Clase.values();
+
+        int base = valorClase(clases, this.mejorAvionUsado);
+        int nueva = valorClase(clases, clase);
+        if (nueva > base) {
+            mejorAvionUsado = clases[nueva];
+        }
+    }
+
+    public int valorClase(Clase clases[], Clase clase){
+        int res = -1, i = 0;
+        while(i < clases.length && res == -1){
+            if (clases[i].equals(clase)) {
+                res = i;
+            }
+            i++;
+        }
+        return res;
+    }
+
+    public void agregarVueloContratado(Vuelo vuelo){
+        this.vuelosContratados.add(vuelo.getId());
+        this.totalGastado += vuelo.getCostoTotal();
     }
 
     public void eliminarVueloContratado(UUID vuelo){

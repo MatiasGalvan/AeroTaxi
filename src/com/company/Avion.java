@@ -15,10 +15,10 @@ public abstract class Avion {
     private Propulsion tipoPropulsion;
     private boolean servicioCatering;
     private Ciudad actual;
-    private String clase;
+    private Clase clase;
     private HashMap<LocalDate, UUID> reservas;
 
-    public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, String clase) {
+    public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, Clase clase) {
         this.id = UUID.randomUUID();
         this.capacidadCombustible = capacidadCombustible;
         this.servicioCatering = servicioCatering;
@@ -68,7 +68,7 @@ public abstract class Avion {
         return servicioCatering;
     }
 
-    public String getClase() {
+    public Clase getClase() {
         return clase;
     }
 

@@ -14,7 +14,7 @@ public class Vuelo{
     private LocalDate fecha;
     public int estado; // -1 cancelado, 0 pendiente, 1 finalizado
     private HashMap<UUID, Integer> pasajeros; //ID Del usuario
-    private String clase;
+    private Clase clase;
 
     public Vuelo(){
         this.id = UUID.randomUUID();
@@ -22,7 +22,7 @@ public class Vuelo{
         this.avion = null;
         this.estado = 0;
         this.pasajeros = new HashMap<>();
-        this.clase = "";
+        this.clase = null;
     }
 
     public Vuelo(Ciudad origen, Ciudad destino, int cantPasajeros, LocalDate fecha) {
@@ -35,7 +35,7 @@ public class Vuelo{
         this.avion = null;
         this.estado = 0;
         this.pasajeros = new HashMap<>();
-        this.clase = "";
+        this.clase = null;
     }
 
     public HashMap<UUID, Integer> getPasajeros() {
@@ -98,11 +98,11 @@ public class Vuelo{
         return id;
     }
 
-    public String getClase() {
+    public Clase getClase() {
         return clase;
     }
 
-    public void setClase(String clase) {
+    public void setClase(Clase clase) {
         this.clase = clase;
     }
 

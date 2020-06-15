@@ -118,7 +118,7 @@ public class Menu {
         else {
             for (UUID reserva : reservas) {
                 Vuelo v = sistema.buscarVueloPorID(reserva);
-                System.out.println("Fecha: " + v.getFecha() + " Origen: " + v.getOrigen().getNombre() + " Destino: " + v.getDestino().getNombre());
+                System.out.println("Fecha: " + v.getFecha() + " Origen: " + v.getOrigen().getNombre() + " Destino: " + v.getDestino().getNombre() + " Clase: " + v.getClase());
             }
         }
     }
@@ -131,6 +131,7 @@ public class Menu {
         for (UUID vuelo : vuelos) {
             v = sistema.buscarVueloPorID(vuelo);
             System.out.println(i + ". " + v);
+            i++;
         }
         System.out.println("Seleccione que vuelo desea cancelar:");
         i = scanInt.nextInt();
@@ -149,7 +150,7 @@ public class Menu {
         Scanner scanInt = new Scanner(System.in);
         boolean flag;
         int idOrigen=0, idDestino=0, dia=0, mes=0, año=0, i=0;
-        String clases[] = {"Bronze", "Silver", "Gold"};
+        Clase clases[] = Clase.values();
 
         System.out.println("FECHA:");
         System.out.println("Ingrese dia:");
@@ -178,7 +179,7 @@ public class Menu {
         vuelo.setCantPasajeros(scanInt.nextInt());
 
         System.out.println("Indique en que clase quiere viajar:");
-        mostrarClases(clases);
+        mostrarClases();
         vuelo.setClase(clases[scanInt.nextInt()]);
 
         LinkedList<Vuelo> vuelos = sistema.vuelosSimilares(vuelo);
@@ -254,10 +255,11 @@ public class Menu {
         return respuesta;
     }
 
-    public void mostrarClases(String clases[]){
+    public void mostrarClases(){
         int i = 0;
+        Clase clases[] = Clase.values();
         System.out.println("-----------------------");
-        for (String clase : clases) {
+        for (Clase clase : clases) {
             System.out.println(i + ". " + clase);
             i++;
         }

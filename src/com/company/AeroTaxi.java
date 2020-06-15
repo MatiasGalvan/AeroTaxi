@@ -56,12 +56,12 @@ public class AeroTaxi {
     public void agregarVuelo (Vuelo vuelo, Usuario usuario) {
         vuelo.getAvion().agregarReserva(vuelo);
         vuelo.agregarPasajeros(usuario, vuelo.getCantPasajeros());
-        usuario.agregarVueloContratado(vuelo.getId());
+        usuario.agregarVueloContratado(vuelo);
         listaVuelos.add(vuelo);
     }
 
     public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
-        usuario.agregarVueloContratado(vuelo.getId());
+        usuario.agregarVueloContratado(vuelo);
         vuelo.agregarPasajeros(usuario, cantPasajeros);
     }
 
@@ -77,7 +77,7 @@ public class AeroTaxi {
     public void listarVuelos (){
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
-            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado());
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
             i++;
         }
     }
@@ -219,7 +219,7 @@ public class AeroTaxi {
 
     public void actualizar(){
         for (Vuelo vuelo : listaVuelos) {
-            if(vuelo.getFecha().plusDays(1).equals(Main.fechaActual()) && vuelo.getEstado() == 0){
+            if( Main.fechaActual().isAfter(vuelo.getFecha()) && vuelo.getEstado() == 0){
                 vuelo.setEstado(1);
                 vuelo.getAvion().eliminarReserva(vuelo);
                 vuelo.getAvion().setActual(vuelo.getDestino());
