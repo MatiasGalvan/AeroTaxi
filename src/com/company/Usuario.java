@@ -15,6 +15,15 @@ public class Usuario {
     private LinkedList<UUID> vuelosContratados;
 
     public Usuario() {
+        this.id = UUID.randomUUID();
+        this.nombre = "";
+        this.apellido = "";
+        this.dni = 0;
+        this.edad = 0;
+        this.mejorAvionUsado = null;
+        this.totalGastado = 0;
+        this.contraseña = "";
+        this.vuelosContratados = new LinkedList<>();
     }
 
     public Usuario(String nombre, String apellido, int dni, int edad, String contraseña) {

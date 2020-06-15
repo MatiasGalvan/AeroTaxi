@@ -38,8 +38,8 @@ public class AeroTaxi {
         int i = 0;
         for (Usuario usuario : listaUsuarios) {
             System.out.println( i + ". " + usuario.getNombre() + " " + usuario.getApellido() +
-                    "\n DNI: " + usuario.getDni() + " Gasto total: " + usuario.getTotalGastado() +
-                    " Mejor avion usado: " + usuario.getMejorAvionUsado()
+                    "\n DNI: " + usuario.getDni() + "\n Gasto total: " + usuario.getTotalGastado() +
+                    "\n Mejor avion usado: " + usuario.getMejorAvionUsado()
             );
             i++;
         }
@@ -176,7 +176,7 @@ public class AeroTaxi {
         for (Avion avion : listaAviones) {
             reservas = avion.getReservas();
 
-            if(!reservas.containsKey(vuelo.getFecha()) && reservas != null) {
+            if(!reservas.containsKey(vuelo.getFecha()) && reservas != null && vuelo.getClase().equals(avion.getClase())) {
                 LocalDate fecha = vuelo.getFecha();
                 boolean vueloAnt = reservas.containsKey(fecha.minusDays(1));
                 boolean vueloSig = reservas.containsKey(fecha.plusDays(1));
@@ -241,6 +241,7 @@ public class AeroTaxi {
                     Usuario u = buscarUsuarioPorID(entry.getKey());
                     u.gastado(vuelo.getCostoTotal());
                     u.eliminarVueloContratado(vuelo.getId());
+                    u.mejorAvion(vuelo.getClase());
                 }
             }
         }

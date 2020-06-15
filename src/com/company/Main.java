@@ -61,6 +61,7 @@ public class Main {
         a.listarUsuarios();
         a.listarVuelos();
         a.listarAviones();
+        a.listarVuelosPorFecha(fecha2);
     }
 
     public static LocalDate fechaActual(){
