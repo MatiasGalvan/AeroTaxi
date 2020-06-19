@@ -18,6 +18,19 @@ public abstract class Avion {
     private Clase clase;
     private HashMap<LocalDate, UUID> reservas;
 
+    public Avion() {
+        this.id = UUID.randomUUID();
+        this.capacidadCombustible = 0;
+        this.servicioCatering = false;
+        this.costoKm = 0;
+        this.capacidadMaxPasajeros = 0;
+        this.velocidadMaxima = 0;
+        this.tipoPropulsion = null;
+        this.actual = null;
+        this.reservas = new HashMap<>();
+        this.tarifa = 0;
+        this.clase = null;
+    }
     public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, Clase clase) {
         this.id = UUID.randomUUID();
         this.capacidadCombustible = capacidadCombustible;

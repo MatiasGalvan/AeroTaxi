@@ -18,6 +18,30 @@ public class AeroTaxi {
         this.listaAviones = new LinkedList<>();
     }
 
+    public LinkedList<Usuario> getListaUsuarios() {
+        return listaUsuarios;
+    }
+
+    public void setListaUsuarios(LinkedList<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
+    }
+
+    public LinkedList<Vuelo> getListaVuelos() {
+        return listaVuelos;
+    }
+
+    public void setListaVuelos(LinkedList<Vuelo> listaVuelos) {
+        this.listaVuelos = listaVuelos;
+    }
+
+    public LinkedList<Avion> getListaAviones() {
+        return listaAviones;
+    }
+
+    public void setListaAviones(LinkedList<Avion> listaAviones) {
+        this.listaAviones = listaAviones;
+    }
+
     // ---------- ABM USUARIO ----------
 
     public void agregarUsuario (Usuario usuario) {
