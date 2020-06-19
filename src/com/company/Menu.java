@@ -2,9 +2,6 @@ package com.company;
 
 import com.company.exceptions.UsuarioNoExisteException;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -28,20 +25,23 @@ public class Menu {
     public void inicio () {
         Scanner scan = new Scanner(System.in);
         int res = 0;
-        System.out.println("------------------------------");
-        System.out.println("1. Ingresar");
-        System.out.println("2. Registrarse");
-        System.out.println("3. Salir");
-        System.out.println("------------------------------");
-        System.out.println("Que quiere hacer?: "); res = scan.nextInt();
-        switch (res) {
-            case 1:
-                ingresar();
-                break;
-            case 2:
-                registrarse();
-                break;
-        }
+        do {
+            System.out.println(replicarCaracter(30, "-"));
+            System.out.println("1. Ingresar");
+            System.out.println("2. Registrarse");
+            System.out.println("3. Salir");
+            System.out.println(replicarCaracter(30, "-"));
+            System.out.println("Que quiere hacer?: ");
+            res = scan.nextInt();
+            switch (res) {
+                case 1:
+                    ingresar();
+                    break;
+                case 2:
+                    registrarse();
+                    break;
+            }
+        } while(res != 3);
     }
 
     public void ingresar(){
@@ -49,32 +49,36 @@ public class Menu {
         Scanner scanInt = new Scanner(System.in);
         String contraseña;
         boolean pass;
-        int res=0;
+        int res=0, salir = 1;
         Usuario usuario = null;
-        while(usuario == null){
+        while(usuario == null && salir == 1){
             try{
                 System.out.println("Ingrese DNI:");
                 res = scanInt.nextInt();
-                usuario = sistema.validarUsuario(res);
+                if(res != 0)
+                    usuario = sistema.validarUsuario(res);
+                else
+                    salir = 0;
             }
             catch (UsuarioNoExisteException e){
-                System.out.println("El DNI ingresado no se encuentra en el sistema.");
+                System.out.println("El DNI ingresado no se encuentra en el sistema. Intente nuevamente o ingrese 0 para salir.");
             }
         }
 
-        do{
-            System.out.println("Ingrese contraseña:");
-            contraseña = scan.nextLine();
-            pass = contraseña.equals(usuario.getContraseña());
-            if (!pass)
-                System.out.println("La contraseña es incorrecta.");
-        } while(!pass);
+        if(salir != 0) {
+            do {
+                System.out.println("Ingrese contraseña:");
+                contraseña = scan.nextLine();
+                pass = contraseña.equals(usuario.getContraseña());
+                if (!pass)
+                    System.out.println("La contraseña es incorrecta.");
+            } while (!pass);
 
-        if(usuario.getDni() != 11000111){
-            menuUsuario(usuario);
-        }
-        else{
-            menuAdmin();
+            if (usuario.getDni() != 11000111) {
+                menuUsuario(usuario);
+            } else {
+                menuAdmin();
+            }
         }
     }
 
@@ -96,16 +100,27 @@ public class Menu {
         inicio();
     }
 
+    public String replicarCaracter(int cant, String a){
+        String res = "";
+        for (int i = 0; i < cant; i++) {
+            res = res.concat(a);
+        }
+        return res;
+    }
+
     public void menuUsuario(Usuario usuario) {
         int res = 0;
+        int espacios = (30 - (usuario.getNombre().length() + usuario.getApellido().length() + 1)) / 2;
         do {
             Scanner scan = new Scanner(System.in);
-            System.out.println("------------------------------");
+            System.out.println("\n" + replicarCaracter(espacios, " ") + usuario.getNombre() + " " +
+                    usuario.getApellido()+replicarCaracter(espacios, " "));
+            System.out.println(replicarCaracter(30, "-"));
             System.out.println("1. Solicitar vuelo");
             System.out.println("2. Cancelar vuelo");
             System.out.println("3. Ver reservas");
             System.out.println("4. Salir");
-            System.out.println("------------------------------");
+            System.out.println(replicarCaracter(30, "-"));
             System.out.println("Que quiere hacer?: ");
             res = scan.nextInt();
             switch (res) {
@@ -127,14 +142,14 @@ public class Menu {
         Scanner scanInt = new Scanner(System.in);
         do {
             Scanner scan = new Scanner(System.in);
-            System.out.println("------------------------------");
+            System.out.println(replicarCaracter(30, "-"));
             System.out.println("1. Listar vuelos");
             System.out.println("2. Listar vuelos en determinada fecha");
             System.out.println("3. Listar aviones");
             System.out.println("4. Listar usuarios");
             System.out.println("5. Agregar avion");
             System.out.println("6. Salir");
-            System.out.println("------------------------------");
+            System.out.println(replicarCaracter(30, "-"));
             System.out.println("Que quiere hacer?: ");
             res = scan.nextInt();
             switch (res) {
@@ -158,8 +173,7 @@ public class Menu {
 
                     prop = seleccionarEnum(Propulsion.values(), "Indique que clase de propulsion utiliza el avion");
 
-                    System.out.println("Indique cuantos pasajeros tiene el avion:");
-                    pasajeros = scanInt.nextInt();
+                    pasajeros = solicitarPasajeros();
 ;
                     ciudad = seleccionarEnum(Ciudad.values(), "Indique en que ciudad se encuentra el avion");
 
@@ -171,6 +185,21 @@ public class Menu {
                     break;
             }
         } while(res != 6);
+    }
+
+    public int solicitarPasajeros(){
+        int pasajeros = 0;
+        Scanner scanInt = new Scanner(System.in);
+        boolean valido = false;
+        while(!valido) {
+            System.out.println("Indique cuantos pasajeros tiene el avion:");
+            pasajeros = scanInt.nextInt();
+            if(pasajeros > 0)
+                valido = true;
+            else
+                System.out.println("La cantidad de pasajeros debe ser mayor a cero.");
+        }
+        return pasajeros;
     }
 
     public void crearAvion(int pasajeros, Propulsion prop, int clase, Ciudad ciudad){
@@ -237,10 +266,8 @@ public class Menu {
         Vuelo vuelo = new Vuelo();
         Scanner scanInt = new Scanner(System.in);
         boolean flag;
-        int idOrigen=0, idDestino=0, i=0;
 
         vuelo.setFecha(solicitarFecha());
-
         vuelo.setOrigen(seleccionarEnum(Ciudad.values(), "Seleccione ciudad de origen"));
 
         do{
@@ -248,9 +275,7 @@ public class Menu {
             flag = sistema.validarVuelo(vuelo);
         }while(flag != true);
 
-        System.out.println("Indique cantidad de pasajeros:");
-        vuelo.setCantPasajeros(scanInt.nextInt());
-
+        vuelo.setCantPasajeros(solicitarPasajeros());
         vuelo.setClase(seleccionarEnum(Clase.values(), "Clases disponibles"));
 
         LinkedList<Vuelo> vuelos = sistema.vuelosSimilares(vuelo);
@@ -264,7 +289,7 @@ public class Menu {
         }
         else{
             System.out.println("En este momento no se encuentran vuelos similares, ni aviones disponibles");
-        };
+        }
     }
 
     public void elegirAvion(LinkedList<Avion> aviones, Vuelo vuelo, Usuario usuario){
@@ -303,7 +328,7 @@ public class Menu {
             System.out.println(i + ". Origen: " + v.getOrigen().getNombre() +
                     " Destino: " + v.getDestino().getNombre() +
                     " Fecha: " + v.getFecha() +
-                    " Costo total: " + v.getCostoTotal() +
+                    " Costo: " + v.costoPorCant(cantPasajeros) +
                     " Clase: " + v.getAvion().getClase());
             i++;
         }

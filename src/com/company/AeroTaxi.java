@@ -66,6 +66,7 @@ public class AeroTaxi {
     public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
         usuario.agregarVueloContratado(vuelo);
         vuelo.agregarPasajeros(usuario, cantPasajeros);
+        vuelo.setCostoTotal();
     }
 
     public void eliminarVuelo (Vuelo vuelo) { //Cambiarla para que haga baja logica

@@ -53,20 +53,20 @@ public class Main {
 
         a.actualizar();
 
-        a.listarUsuarios();
+        /*a.listarUsuarios();
         a.listarVuelos();
-        a.listarAviones();
+        a.listarAviones();*/
 
         Menu m = new Menu(a);
         m.inicio();
 
-        a.listarUsuarios();
+        /*a.listarUsuarios();
         a.listarVuelos();
         a.listarAviones();
-        a.listarVuelosPorFecha(fecha2);
+        a.listarVuelosPorFecha(fecha2);*/
     }
 
     public static LocalDate fechaActual(){
-        return LocalDate.of(2020,6,12);
+        return LocalDate.of(2020,6,20);
     }
 }
