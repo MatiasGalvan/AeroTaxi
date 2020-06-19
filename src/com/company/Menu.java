@@ -1,10 +1,17 @@
 package com.company;
 
 import com.company.exceptions.UsuarioNoExisteException;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static com.company.Main.fechaActual;
 
 public class Menu {
 
@@ -63,7 +70,12 @@ public class Menu {
                 System.out.println("La contraseña es incorrecta.");
         } while(!pass);
 
-        menuUsuario(usuario);
+        if(usuario.getDni() != 11000111){
+            menuUsuario(usuario);
+        }
+        else{
+            menuAdmin();
+        }
     }
 
     public void registrarse () {
@@ -110,6 +122,73 @@ public class Menu {
         } while(res != 4);
     }
 
+    public void menuAdmin(){
+        int res = 0;
+        Scanner scanInt = new Scanner(System.in);
+        do {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("------------------------------");
+            System.out.println("1. Listar vuelos");
+            System.out.println("2. Listar vuelos en determinada fecha");
+            System.out.println("3. Listar aviones");
+            System.out.println("4. Listar usuarios");
+            System.out.println("5. Agregar avion");
+            System.out.println("6. Salir");
+            System.out.println("------------------------------");
+            System.out.println("Que quiere hacer?: ");
+            res = scan.nextInt();
+            switch (res) {
+                case 1:
+                    sistema.listarVuelos();
+                    break;
+                case 2:
+                    sistema.listarVuelosPorFecha(solicitarFecha());
+                    break;
+                case 3:
+                    sistema.listarAviones();
+                    break;
+                case 4:
+                    sistema.listarUsuarios();
+                    break;
+                case 5:
+                    Propulsion prop = null;
+                    int pasajeros = 0;
+                    int clase = 0;
+                    Ciudad ciudad = null;
+
+                    prop = seleccionarEnum(Propulsion.values(), "Indique que clase de propulsion utiliza el avion");
+
+                    System.out.println("Indique cuantos pasajeros tiene el avion:");
+                    pasajeros = scanInt.nextInt();
+;
+                    ciudad = seleccionarEnum(Ciudad.values(), "Indique en que ciudad se encuentra el avion");
+
+                    System.out.println("De que clase es el avion?:");
+                    mostrarEnum(Clase.values(), "Clases disponibles");
+                    clase = scanInt.nextInt();
+
+                    crearAvion(pasajeros, prop, clase, ciudad);
+                    break;
+            }
+        } while(res != 6);
+    }
+
+    public void crearAvion(int pasajeros, Propulsion prop, int clase, Ciudad ciudad){
+        Avion av = null;
+        switch (clase){
+            case 0:
+                av = new Bronze(pasajeros, prop, ciudad);
+                break;
+            case 1:
+                av = new Silver(pasajeros, prop, ciudad);
+                break;
+            case 2:
+                av = new Gold(pasajeros, prop, ciudad);
+                break;
+        }
+        sistema.agregarAvion(av);
+    }
+
     public void verReservas(Usuario usuario){
         LinkedList<UUID> reservas = usuario.getVuelosContratados();
         if(reservas.isEmpty()){
@@ -127,6 +206,7 @@ public class Menu {
         LinkedList<UUID> vuelos = usuario.getVuelosContratados();
         Vuelo v = null;
         int i = 0;
+        boolean validar = false;
         Scanner scanInt = new Scanner(System.in);
         for (UUID vuelo : vuelos) {
             v = sistema.buscarVueloPorID(vuelo);
@@ -134,7 +214,15 @@ public class Menu {
             i++;
         }
         System.out.println("Seleccione que vuelo desea cancelar:");
-        i = scanInt.nextInt();
+        while (!validar) {
+            i = scanInt.nextInt();
+            if(i >= 0 && i < vuelos.size()) {
+                validar = true;
+            }
+            else
+                System.out.println("Opcion no valida.");
+        }
+
         v = sistema.buscarVueloPorID(vuelos.get(i));
 
         if(sistema.cancelarVuelo(v, usuario)){
@@ -149,38 +237,21 @@ public class Menu {
         Vuelo vuelo = new Vuelo();
         Scanner scanInt = new Scanner(System.in);
         boolean flag;
-        int idOrigen=0, idDestino=0, dia=0, mes=0, año=0, i=0;
-        Clase clases[] = Clase.values();
+        int idOrigen=0, idDestino=0, i=0;
 
-        System.out.println("FECHA:");
-        System.out.println("Ingrese dia:");
-        dia = scanInt.nextInt();
-        System.out.println("Ingrese mes:");
-        mes = scanInt.nextInt();
-        System.out.println("Ingrese año:");
-        año = scanInt.nextInt();
-        LocalDate fecha = LocalDate.of(año,mes,dia);
-        vuelo.setFecha(fecha);
+        vuelo.setFecha(solicitarFecha());
 
-        mostrarCiudades();
-        System.out.println("Seleccione ciudad de origen:");
-        idOrigen = scanInt.nextInt();
-        vuelo.setOrigen(seleccionar(idOrigen));
+        vuelo.setOrigen(seleccionarEnum(Ciudad.values(), "Seleccione ciudad de origen"));
 
         do{
-            mostrarCiudades();
-            System.out.println("Seleccione ciudad de destino:");
-            idDestino = scanInt.nextInt();
-            vuelo.setDestino(seleccionar(idDestino));
+            vuelo.setDestino(seleccionarEnum(Ciudad.values(), "Seleccione ciudad de destino"));
             flag = sistema.validarVuelo(vuelo);
         }while(flag != true);
 
         System.out.println("Indique cantidad de pasajeros:");
         vuelo.setCantPasajeros(scanInt.nextInt());
 
-        System.out.println("Indique en que clase quiere viajar:");
-        mostrarClases();
-        vuelo.setClase(clases[scanInt.nextInt()]);
+        vuelo.setClase(seleccionarEnum(Clase.values(), "Clases disponibles"));
 
         LinkedList<Vuelo> vuelos = sistema.vuelosSimilares(vuelo);
         LinkedList<Avion> aviones = sistema.buscarAvionesDisponibles(vuelo);
@@ -247,31 +318,68 @@ public class Menu {
             System.out.println("Opcion no valida");
     }
 
-    public Ciudad seleccionar(int id){
-        Ciudad ciudades[] = Ciudad.values();
-        Ciudad respuesta = null;
-        if(id >= 0 && id < ciudades.length)
-            respuesta = ciudades[id];
+    public LocalDate solicitarFecha(){
+        Scanner scanInt = new Scanner(System.in);
+        int dia=0, mes=0, año=0;
+        LocalDate fecha = null;
+        boolean validar = false, aux = false;
+
+        while (!validar) {
+            try {
+                System.out.println("FECHA:");
+                System.out.println("Ingrese dia:");
+                dia = scanInt.nextInt();
+                System.out.println("Ingrese mes:");
+                mes = scanInt.nextInt();
+                while (!aux) {
+                    System.out.println("Ingrese año:");
+                    año = scanInt.nextInt();
+                    if(año >= fechaActual().getYear() && año <= (fechaActual().getYear()+10))
+                        aux = true;
+                    else{
+                        System.out.println("Solo pueden realizarse reservas entre el año "+fechaActual().getYear()+
+                                " - "+(fechaActual().getYear()+10));
+                    }
+                }
+                fecha = LocalDate.of(año,mes,dia);
+                validar = true;
+            } catch (DateTimeException e) {
+                System.out.println("\nLa fecha ingresada no es valida. Dia 1-31 Mes 1-12\n");
+                aux = false;
+            }
+        }
+
+        return fecha;
+    }
+
+    public <T extends Enum<T>> T seleccionarEnum(T [] a, String titulo){
+        Scanner scanInt = new Scanner(System.in);
+        int id;
+        T respuesta = null;
+        boolean valido = false;
+
+        while(!valido) {
+            mostrarEnum(a, titulo);
+            System.out.println("Que opcion desea elegir?: ");
+            id = scanInt.nextInt();
+
+            if (id >= 0 && id < a.length) {
+                respuesta = a[id];
+                valido = true;
+            }
+            else{
+                System.out.println("El ID ingresado no es valido.");
+            }
+        }
         return respuesta;
     }
 
-    public void mostrarClases(){
+    public <T extends Enum<T>> void mostrarEnum(T [] a, String titulo){
         int i = 0;
-        Clase clases[] = Clase.values();
+        System.out.println(titulo);
         System.out.println("-----------------------");
-        for (Clase clase : clases) {
-            System.out.println(i + ". " + clase);
-            i++;
-        }
-        System.out.println("-----------------------");
-    }
-
-    public void mostrarCiudades(){
-        int i=0;
-        System.out.println("Ciudades disponibles:");
-        System.out.println("-----------------------");
-        for(Ciudad value: Ciudad.values()){
-            System.out.println(i+". "+value.getNombre());
+        for (T obj : a) {
+            System.out.println(i + ". " + obj);
             i++;
         }
         System.out.println("-----------------------");

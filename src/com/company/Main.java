@@ -9,19 +9,21 @@ public class Main {
         Usuario u1 = new Usuario("Juan", "Perez", 41999234, 26, "1234");
         Usuario u2 = new Usuario("Ramon", "Dominguez", 13359235, 49, "1234");
         Usuario u3 = new Usuario("Romina", "Jara", 30939254, 30, "1234");
-        Usuario u4 = new Usuario("Lautaro", "Vidal", 30939254, 39, "1234");
+        Usuario u4 = new Usuario("Lautaro", "Vidal", 30956254, 39, "1234");
+        Usuario u5 = new Usuario("Admin", "1234", 11000111, 20, "1234");
 
         AeroTaxi a = new AeroTaxi();
         a.agregarUsuario(u1);
         a.agregarUsuario(u2);
         a.agregarUsuario(u3);
         a.agregarUsuario(u4);
+        a.agregarUsuario(u5);
 
-        Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
-        Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
-        Gold av3 = new Gold(500,20,3000,Propulsion.REACCION,Ciudad.MONTEVIDEO);
-        Silver av4 = new Silver(250,25,2000,Propulsion.PISTON,Ciudad.CORDOBA);
-        Gold av5 = new Gold(500,10,3000,Propulsion.REACCION,Ciudad.SANTIAGO);
+        Avion av1 = new Bronze(1000, Propulsion.HELICE,Ciudad.BSAS);
+        Avion av2 = new Silver(250, Propulsion.PISTON,Ciudad.CORDOBA);
+        Avion av3 = new Gold(500, Propulsion.REACCION,Ciudad.MONTEVIDEO);
+        Avion av4 = new Silver(250, Propulsion.PISTON,Ciudad.CORDOBA);
+        Avion av5 = new Gold(50, Propulsion.REACCION,Ciudad.SANTIAGO);
 
         a.agregarAvion(av1);
         a.agregarAvion(av2);

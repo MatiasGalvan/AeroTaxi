@@ -18,13 +18,13 @@ public abstract class Avion {
     private Clase clase;
     private HashMap<LocalDate, UUID> reservas;
 
-    public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, Clase clase) {
+    public Avion(int capacidadMaxPasajeros, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, Clase clase) {
         this.id = UUID.randomUUID();
-        this.capacidadCombustible = capacidadCombustible;
+        this.capacidadCombustible = tipoPropulsion.getCombustible();
         this.servicioCatering = servicioCatering;
         this.costoKm = costoKm();
         this.capacidadMaxPasajeros = capacidadMaxPasajeros;
-        this.velocidadMaxima = velocidadMaxima;
+        this.velocidadMaxima = tipoPropulsion.getVelocidad();
         this.tipoPropulsion = tipoPropulsion;
         this.actual = actual;
         this.reservas = new HashMap<>();
@@ -74,10 +74,11 @@ public abstract class Avion {
 
     public int costoKm(){
         int res = 0;
-        if(servicioCatering)
-            res = (int) Math.random()*300+250;
+        if(servicioCatering) {
+            res = (int) (Math.random() * (300 - 250) + 250);
+        }
         else
-            res = (int) Math.random()*300+150;
+            res = (int) (Math.random() * (250-150) + 150);
         return res;
     }
 
@@ -103,6 +104,7 @@ public abstract class Avion {
                 "\nCosto por Km: " + costoKm +
                 "\nCapacidad maxima de pasajeros: " + capacidadMaxPasajeros +
                 "\nServicio de catering: " + servicioCatering +
-                "\nActual: " + actual;
+                "\nActual: " + actual +
+                "\nClase: " + clase.name();
     }
 }

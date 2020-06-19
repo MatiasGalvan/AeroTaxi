@@ -2,7 +2,7 @@ package com.company;
 
 public class Silver extends Avion {
 
-    public Silver(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, Ciudad actual) {
-        super(capacidadCombustible, capacidadMaxPasajeros, velocidadMaxima, tipoPropulsion, true, actual, 4000,Clase.SILVER);
+    public Silver(int capacidadMaxPasajeros, Propulsion tipoPropulsion, Ciudad actual) {
+        super(capacidadMaxPasajeros, tipoPropulsion, true, actual, 4000,Clase.SILVER);
     }
 }
