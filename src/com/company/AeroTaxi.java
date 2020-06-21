@@ -87,6 +87,12 @@ public class AeroTaxi {
         listaVuelos.add(vuelo);
     }
 
+    public void cargarVuelo (Vuelo vuelo){
+        if(vuelo instanceof Vuelo)
+            listaVuelos.add(vuelo);
+    }
+
+
     public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
         usuario.agregarVueloContratado(vuelo);
         vuelo.agregarPasajeros(usuario, cantPasajeros);

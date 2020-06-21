@@ -23,10 +23,10 @@ public class Persistencia {
     }
 
     public void usuariosToArchivo() throws  IOException{
-        GsonBuilder gson = new GsonBuilder();
+        Gson gson = new Gson();
         BufferedWriter bw = new BufferedWriter(new FileWriter("Usuarios.json"));
         try {
-            String json = gson.create().toJson(sistema.getListaUsuarios());
+            String json = gson.toJson(sistema.getListaUsuarios());
             bw.write(json);
         } catch (IOException e) {
             System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
@@ -39,11 +39,9 @@ public class Persistencia {
         BufferedReader br = new BufferedReader(new FileReader("Usuarios.json"));
         try {
              String jsonArray = br.readLine();
-            System.out.println(jsonArray);
              Type listType = new TypeToken<LinkedList<Usuario>>(){}.getType();
              LinkedList<Usuario> json = gson.create().fromJson(jsonArray, listType);
             if(json != null)sistema.setListaUsuarios(json);
-            sistema.listarUsuarios();
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
         } finally {
@@ -52,11 +50,14 @@ public class Persistencia {
     }
 
     public void vuelosToArchivo() throws  IOException{
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Avion.class, new AvionAdapter());
+        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
+                .registerSubtype(Bronze.class, "Bronze")
+                .registerSubtype(Silver.class, "Silver")
+                .registerSubtype(Gold.class, "Gold");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
         BufferedWriter bw = new BufferedWriter(new FileWriter("Vuelos.json"));
         try {
-            String json = gson.create().toJson(sistema.getListaVuelos());
+            String json = gson.toJson(sistema.getListaVuelos());
             bw.write(json);
         } catch (IOException e) {
             System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
@@ -66,15 +67,17 @@ public class Persistencia {
     }
 
     public void archivoToVuelos() throws  IOException{
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Avion.class, new AvionAdapter());
+        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
+                .registerSubtype(Bronze.class, "Bronze")
+                .registerSubtype(Silver.class, "Silver")
+                .registerSubtype(Gold.class, "Gold");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
         BufferedReader br = new BufferedReader(new FileReader("Vuelos.json"));
         try {
             String jsonArray = br.readLine();
             Type listType = new TypeToken<LinkedList<Vuelo>>(){}.getType();
-            LinkedList<Vuelo> json = gson.create().fromJson(jsonArray, listType);
+            LinkedList<Vuelo> json = gson.fromJson(jsonArray, listType);
             if(json != null)sistema.setListaVuelos(json);
-            sistema.listarVuelos();
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
         } finally {
@@ -83,12 +86,18 @@ public class Persistencia {
     }
 
     public void avionesToArchivo() throws  IOException{
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Avion.class, new AvionAdapter());
+        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
+                .registerSubtype(Bronze.class, "Bronze")
+                .registerSubtype(Silver.class, "Silver")
+                .registerSubtype(Gold.class, "Gold");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
         BufferedWriter bw = new BufferedWriter(new FileWriter("Aviones.json"));
         try {
-            String json = gson.create().toJson(sistema.getListaAviones());
-            bw.write(json);
+            for(Avion avion:sistema.getListaAviones()){
+                String json = gson.toJson(avion,Avion.class);
+                bw.write(json);
+                bw.newLine();
+            }
         } catch (IOException e) {
             System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
         } finally {
@@ -96,20 +105,24 @@ public class Persistencia {
         }
     }
     public void archivoToAviones() throws  IOException{
-        GsonBuilder gson = new GsonBuilder().registerTypeAdapter(Avion.class, new AvionAdapter());
+        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
+                .registerSubtype(Bronze.class, "Bronze")
+                .registerSubtype(Silver.class, "Silver")
+                .registerSubtype(Gold.class, "Gold");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
         BufferedReader br = new BufferedReader(new FileReader("Aviones.json"));
         try {
-            String jsonArray = br.readLine();
-            System.out.println(jsonArray);
-            Type listType = new TypeToken<LinkedList<Avion>>(){}.getType();
-            LinkedList<Avion> json = gson.create().fromJson(jsonArray, listType);
-            if(json != null)sistema.setListaAviones(json);
-            sistema.listarAviones();
+            String json;
+            while((json = br.readLine()) != null){
+                Avion avion = gson.fromJson(json,Avion.class);
+                sistema.agregarAvion(avion);
+            }
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
         } finally {
             br.close();
         }
+
     }
 
 }

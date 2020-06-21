@@ -8,11 +8,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Usuario u1 = new Usuario("pepito","ela",42089205,20,"1234");
-        Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
+       // Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
+        //Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
+        //Gold av3 = new Gold(500,20,3000,Propulsion.REACCION,Ciudad.MONTEVIDEO);
         AeroTaxi a = new AeroTaxi();
-        a.agregarUsuario(u1);
-        a.agregarAvion(av1);
+        //a.agregarAvion(av1);
+        //a.agregarAvion(av2);
+        //a.agregarAvion(av3);
         Persistencia p = new Persistencia(a);
         p.archivoToUsuarios();
         p.archivoToAviones();
@@ -22,39 +24,32 @@ public class Main {
         a.listarVuelos();
 
 
-      //  Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
-        Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
-        Gold av3 = new Gold(500,20,3000,Propulsion.REACCION,Ciudad.MONTEVIDEO);
-        Silver av4 = new Silver(250,25,2000,Propulsion.PISTON,Ciudad.CORDOBA);
-        Gold av5 = new Gold(500,10,3000,Propulsion.REACCION,Ciudad.SANTIAGO);
 
-        a.agregarAvion(av1);
-        a.agregarAvion(av2);
-        a.agregarAvion(av3);
-        a.agregarAvion(av4);
-        a.agregarAvion(av5);
 
-        LocalDate fecha = LocalDate.of(2020,6,10);
+
+       /* LocalDate fecha = LocalDate.of(2020,6,10);
         LocalDate fecha2 = LocalDate.of(2020,6,11);
         LocalDate fecha3 = LocalDate.of(2020,6,12);
+
         Vuelo v1 = new Vuelo(Ciudad.CORDOBA,Ciudad.BSAS,5,fecha);
         Vuelo v2 = new Vuelo(Ciudad.BSAS,Ciudad.SANTIAGO,5,fecha2);
-        Vuelo v3 = new Vuelo(Ciudad.BSAS,Ciudad.SANTIAGO,5,fecha3);
-
-        v1.setAvion(av2);
-        v2.setAvion(av1);
+        v1.setAvion(av1);
+        v2.setAvion(av2);
         v1.setCostoTotal();
         v2.setCostoTotal();
         v1.setClase(av2.getClase());
         v2.setClase(av1.getClase());
-
+        a.cargarVuelo(v1);
+        a.cargarVuelo(v2);
+        a.listarVuelos();*/
         a.actualizar();
         Menu m = new Menu(a);
         m.inicio();
 
         p.usuariosToArchivo();
-        p.avionesToArchivo();
         p.vuelosToArchivo();
+        p.avionesToArchivo();
+
     }
 
     public static LocalDate fechaActual(){
