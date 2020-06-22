@@ -237,28 +237,32 @@ public class Menu {
         int i = 0;
         boolean validar = false;
         Scanner scanInt = new Scanner(System.in);
-        for (UUID vuelo : vuelos) {
-            v = sistema.buscarVueloPorID(vuelo);
-            System.out.println(i + ". " + v);
-            i++;
-        }
-        System.out.println("Seleccione que vuelo desea cancelar:");
-        while (!validar) {
-            i = scanInt.nextInt();
-            if(i >= 0 && i < vuelos.size()) {
-                validar = true;
+
+        if(!vuelos.isEmpty()) {
+            for (UUID vuelo : vuelos) {
+                v = sistema.buscarVueloPorID(vuelo);
+                System.out.println(i + ". " + v);
+                i++;
             }
-            else
-                System.out.println("Opcion no valida.");
-        }
+            System.out.println("Seleccione que vuelo desea cancelar:");
+            while (!validar) {
+                i = scanInt.nextInt();
+                if (i >= 0 && i < vuelos.size()) {
+                    validar = true;
+                } else
+                    System.out.println("Opcion no valida.");
+            }
 
-        v = sistema.buscarVueloPorID(vuelos.get(i));
+            v = sistema.buscarVueloPorID(vuelos.get(i));
 
-        if(sistema.cancelarVuelo(v, usuario)){
-            System.out.println("El vuelo fue cancelado de su cuenta.");
+            if (sistema.cancelarVuelo(v, usuario)) {
+                System.out.println("El vuelo fue cancelado de su cuenta.");
+            } else {
+                System.out.println("No puede cancelarce el vuelo sin 24hs de anticipacion.");
+            }
         }
         else{
-            System.out.println("No puede cancelarce el vuelo sin 24hs de anticipacion.");
+            System.out.println("No tiene vuelos pendientes en su lista de reservas.");
         }
     }
 
