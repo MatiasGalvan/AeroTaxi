@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
-
+import java.time.LocalDate;
 public class Persistencia {
 
     private AeroTaxi sistema;
@@ -110,11 +109,12 @@ public class Persistencia {
                 .registerSubtype(Silver.class, "Silver")
                 .registerSubtype(Gold.class, "Gold");
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
+        Type avionType = new TypeToken<LinkedList<Avion>>(){}.getType();
         BufferedReader br = new BufferedReader(new FileReader("Aviones.json"));
         try {
             String json;
             while((json = br.readLine()) != null){
-                Avion avion = gson.fromJson(json,Avion.class);
+                Avion avion = gson.fromJson(json, Avion.class);
                 sistema.agregarAvion(avion);
             }
         } catch (IOException e) {

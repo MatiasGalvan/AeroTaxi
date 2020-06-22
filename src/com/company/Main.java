@@ -8,13 +8,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-       // Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
-        //Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
-        //Gold av3 = new Gold(500,20,3000,Propulsion.REACCION,Ciudad.MONTEVIDEO);
+        Bronze av1 = new Bronze(100,100,1000,Propulsion.HELICE,Ciudad.BSAS);
+        Silver av2 = new Silver(250,50,2000,Propulsion.PISTON,Ciudad.CORDOBA);
+        Gold av3 = new Gold(500,20,3000,Propulsion.REACCION,Ciudad.MONTEVIDEO);
         AeroTaxi a = new AeroTaxi();
-        //a.agregarAvion(av1);
-        //a.agregarAvion(av2);
-        //a.agregarAvion(av3);
+        a.agregarAvion(av1);
+        a.agregarAvion(av2);
+        a.agregarAvion(av3);
         Persistencia p = new Persistencia(a);
         p.archivoToUsuarios();
         p.archivoToAviones();
@@ -27,7 +27,7 @@ public class Main {
 
 
 
-       /* LocalDate fecha = LocalDate.of(2020,6,10);
+       LocalDate fecha = LocalDate.of(2020,6,10);
         LocalDate fecha2 = LocalDate.of(2020,6,11);
         LocalDate fecha3 = LocalDate.of(2020,6,12);
 
@@ -41,7 +41,7 @@ public class Main {
         v2.setClase(av1.getClase());
         a.cargarVuelo(v1);
         a.cargarVuelo(v2);
-        a.listarVuelos();*/
+       // a.listarVuelos();
         a.actualizar();
         Menu m = new Menu(a);
         m.inicio();
