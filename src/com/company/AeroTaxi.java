@@ -105,7 +105,7 @@ public class AeroTaxi {
     public void listarVuelos (){
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
-            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase()+ "Avion:" + vuelo.getAvion());
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase() + "avion" + vuelo.getAvion());
             i++;
         }
     }

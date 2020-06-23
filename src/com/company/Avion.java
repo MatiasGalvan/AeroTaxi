@@ -1,11 +1,12 @@
 package com.company;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class Avion {
+public class Avion {
     private UUID id;
     private int capacidadCombustible;
     private int costoKm;
@@ -16,7 +17,7 @@ public abstract class Avion {
     private boolean servicioCatering;
     private Ciudad actual;
     private Clase clase;
-    private HashMap<LocalDate, UUID> reservas;
+    private transient HashMap<LocalDate,UUID> reservas;
 
     public Avion() {
         this.id = UUID.randomUUID();
@@ -96,7 +97,7 @@ public abstract class Avion {
     }
 
     public void agregarReserva(Vuelo vuelo){
-        reservas.put(vuelo.getFecha(), vuelo.getId());
+        reservas.put(vuelo.getFecha(),vuelo.getId());
     }
 
     public void eliminarReserva(Vuelo vuelo) {

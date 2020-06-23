@@ -1,1 +1,1 @@
-[{"conexionWifi":false,"id":"19063c9c-ae60-40c0-8eba-d60ede1198a2","capacidadCombustible":500,"costoKm":250,"capacidadMaxPasajeros":20,"tarifa":6000,"velocidadMaxima":3000.0,"tipoPropulsion":"REACCION","servicioCatering":true,"actual":"MONTEVIDEO","clase":"GOLD","reservas":{}}]
+[{"conexionWifi":true,"id":"213cdd73-209b-42c1-b3b7-383985271d37","capacidadCombustible":500,"costoKm":250,"capacidadMaxPasajeros":20,"tarifa":6000,"velocidadMaxima":3000.0,"tipoPropulsion":"REACCION","servicioCatering":true,"actual":"MONTEVIDEO","clase":"GOLD"}]
