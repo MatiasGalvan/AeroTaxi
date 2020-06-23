@@ -3,6 +3,9 @@ package com.company;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -49,11 +52,7 @@ public class Persistencia {
     }
 
     public void vuelosToArchivo() throws  IOException{
-        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
-                .registerSubtype(Bronze.class, "Bronze")
-                .registerSubtype(Silver.class, "Silver")
-                .registerSubtype(Gold.class, "Gold");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
+        Gson gson = new Gson();
         BufferedWriter bw = new BufferedWriter(new FileWriter("Vuelos.json"));
         try {
             String json = gson.toJson(sistema.getListaVuelos());
@@ -64,13 +63,8 @@ public class Persistencia {
             bw.close();
         }
     }
-
     public void archivoToVuelos() throws  IOException{
-        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
-                .registerSubtype(Bronze.class, "Bronze")
-                .registerSubtype(Silver.class, "Silver")
-                .registerSubtype(Gold.class, "Gold");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
+        Gson gson = new Gson();
         BufferedReader br = new BufferedReader(new FileReader("Vuelos.json"));
         try {
             String jsonArray = br.readLine();
@@ -84,45 +78,115 @@ public class Persistencia {
         }
     }
 
-    public void avionesToArchivo() throws  IOException{
-        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
-                .registerSubtype(Bronze.class, "Bronze")
-                .registerSubtype(Silver.class, "Silver")
-                .registerSubtype(Gold.class, "Gold");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
-        BufferedWriter bw = new BufferedWriter(new FileWriter("Aviones.json"));
+    public void bronzeToArchivo() throws IOException {
+        Gson gson = new Gson();
+        BufferedWriter bw = new BufferedWriter(new FileWriter("AvionesBronze.json"));
+        ArrayList aviones = new ArrayList();
         try {
-            for(Avion avion:sistema.getListaAviones()){
-                String json = gson.toJson(avion,Avion.class);
-                bw.write(json);
-                bw.newLine();
+            String json="";
+            for (Avion avion: sistema.getListaAviones()){
+                if(avion instanceof Bronze) aviones.add(avion);
             }
+            json = gson.toJson(aviones);
+            bw.write(json);
         } catch (IOException e) {
             System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
         } finally {
             bw.close();
         }
     }
-    public void archivoToAviones() throws  IOException{
-        RuntimeTypeAdapterFactory<Avion> avionAdapterFactory = RuntimeTypeAdapterFactory.of(Avion.class, "type")
-                .registerSubtype(Bronze.class, "Bronze")
-                .registerSubtype(Silver.class, "Silver")
-                .registerSubtype(Gold.class, "Gold");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(avionAdapterFactory).create();
-        Type avionType = new TypeToken<LinkedList<Avion>>(){}.getType();
-        BufferedReader br = new BufferedReader(new FileReader("Aviones.json"));
+
+    public void archivoToBronze() throws  IOException{
+        Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader("AvionesBronze.json"));
         try {
-            String json;
-            while((json = br.readLine()) != null){
-                Avion avion = gson.fromJson(json, Avion.class);
-                sistema.agregarAvion(avion);
+            String jsonArray = br.readLine();
+            Type listType = new TypeToken<LinkedList<Bronze>>(){}.getType();
+            LinkedList<Bronze> aviones = gson.fromJson(jsonArray,listType);
+            if(aviones != null){
+                for (Bronze avion:aviones){
+                    sistema.agregarAvion(avion);
+                }
             }
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
         } finally {
             br.close();
         }
+    }
 
+    public void silverToArchivo() throws IOException {
+        Gson gson = new Gson();
+        BufferedWriter bw = new BufferedWriter(new FileWriter("AvionesSilver.json"));
+        ArrayList aviones = new ArrayList();
+        try {
+            String json="";
+            for (Avion avion: sistema.getListaAviones()){
+                if(avion instanceof Silver) aviones.add(avion);
+            }
+            json = gson.toJson(aviones);
+            bw.write(json);
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
+        } finally {
+            bw.close();
+        }
+    }
+    public void archivoToSilver() throws  IOException{
+        Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader("AvionesSilver.json"));
+        try {
+            String jsonArray = br.readLine();
+            Type listType = new TypeToken<LinkedList<Silver>>(){}.getType();
+            LinkedList<Silver> aviones = gson.fromJson(jsonArray,listType);
+            aviones = gson.fromJson(jsonArray, listType);
+            if(aviones != null){
+                for (Silver avion:aviones){
+                    sistema.agregarAvion(avion);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
+        } finally {
+            br.close();
+        }
+    }
+
+    public void goldToArchivo() throws IOException {
+        Gson gson = new Gson();
+        BufferedWriter bw = new BufferedWriter(new FileWriter("AvionesGold.json"));
+        ArrayList aviones = new ArrayList();
+        try {
+            String json="";
+            for (Avion avion: sistema.getListaAviones()){
+                if(avion instanceof Gold) aviones.add(avion);
+            }
+            json = gson.toJson(aviones);
+            bw.write(json);
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al escribir en el archivo:" + e.getMessage());
+        } finally {
+            bw.close();
+        }
+    }
+    public void archivoToGold() throws  IOException{
+        Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader("AvionesGold.json"));
+        try {
+            String jsonArray = br.readLine();
+            Type listType = new TypeToken<LinkedList<Gold>>(){}.getType();
+            LinkedList<Gold> aviones = gson.fromJson(jsonArray,listType);
+            aviones = gson.fromJson(jsonArray, listType);
+            if(aviones != null){
+                for (Gold avion:aviones){
+                    sistema.agregarAvion(avion);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al leer en el archivo:" + e.getMessage());
+        } finally {
+            br.close();
+        }
     }
 
 }

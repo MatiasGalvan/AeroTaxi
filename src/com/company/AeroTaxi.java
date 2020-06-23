@@ -87,11 +87,6 @@ public class AeroTaxi {
         listaVuelos.add(vuelo);
     }
 
-    public void cargarVuelo (Vuelo vuelo){
-        if(vuelo instanceof Vuelo)
-            listaVuelos.add(vuelo);
-    }
-
 
     public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
         usuario.agregarVueloContratado(vuelo);
@@ -110,7 +105,7 @@ public class AeroTaxi {
     public void listarVuelos (){
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
-            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase()+ "Avion:" + vuelo.getAvion());
             i++;
         }
     }

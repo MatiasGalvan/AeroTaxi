@@ -31,6 +31,7 @@ public abstract class Avion {
         this.tarifa = 0;
         this.clase = null;
     }
+
     public Avion(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, boolean servicioCatering, Ciudad actual, int tarifa, Clase clase) {
         this.id = UUID.randomUUID();
         this.capacidadCombustible = capacidadCombustible;
@@ -113,6 +114,7 @@ public abstract class Avion {
     @Override
     public String toString() {
         return "Avion" +
+                "\nClase: " + clase +
                 "\nCosto por Km: " + costoKm +
                 "\nCapacidad maxima de pasajeros: " + capacidadMaxPasajeros +
                 "\nServicio de catering: " + servicioCatering +

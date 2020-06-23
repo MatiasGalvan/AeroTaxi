@@ -9,7 +9,7 @@ public class Vuelo{
     private Ciudad origen;
     private Ciudad destino;
     private int cantPasajeros;
-    private Avion avion;
+    private transient Avion avion;
     private double costoTotal;
     private LocalDate fecha;
     public int estado; // -1 cancelado, 0 pendiente, 1 finalizado
