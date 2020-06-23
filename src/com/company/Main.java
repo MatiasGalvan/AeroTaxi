@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Usuario admin = new Usuario("Admin","Sistema",11000111,35,"1234");
         AeroTaxi a = new AeroTaxi();
-        //a.agregarUsuario(admin);
+        a.agregarUsuario(admin);
         Persistencia p = new Persistencia(a);
         p.archivoToUsuarios();
         p.archivoToBronze();

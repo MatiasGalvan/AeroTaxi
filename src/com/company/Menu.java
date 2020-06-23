@@ -306,7 +306,7 @@ public class Menu {
                     " Servicio de catering: " + avion.isServicioCatering());
             i++;
         }
-        System.out.println("¿Quiere avion quiere contratar?: ");
+        System.out.println("¿Que avion quiere contratar?: ");
         aux = scanInt.nextInt();
         if(aux >= 0 && aux < aviones.size()) {
             Avion a = aviones.get(aux);
