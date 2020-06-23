@@ -1,1 +1,1 @@
-[{"id":"93509cc8-4245-4278-b3ea-031e289a853e","capacidadCombustible":250,"costoKm":250,"capacidadMaxPasajeros":50,"tarifa":4000,"velocidadMaxima":2000.0,"tipoPropulsion":"PISTON","servicioCatering":true,"actual":"CORDOBA","clase":"SILVER"}]
+[{"id":"fc34fd42-5b53-432f-99f6-9e9de8ee629e","capacidadCombustible":250,"costoKm":275,"capacidadMaxPasajeros":10,"tarifa":4000,"velocidadMaxima":3000.0,"tipoPropulsion":"HELICE","servicioCatering":true,"actual":"MONTEVIDEO","clase":"SILVER"}]

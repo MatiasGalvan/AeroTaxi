@@ -128,10 +128,11 @@ public class Usuario {
         boolean flag = false;
 
         while(i < vuelosContratados.size() && flag == false){
-            if( vuelosContratados.get(i).equals(vuelo)){
+            if(vuelosContratados.get(i).equals(vuelo)){
                 this.vuelosContratados.remove(vuelo);
                 flag = true;
             }
+            i++;
         }
     }
 

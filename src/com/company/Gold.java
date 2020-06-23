@@ -6,8 +6,10 @@ public class Gold extends Avion {
     public Gold(){
 
     }
-    public Gold(int capacidadCombustible, int capacidadMaxPasajeros, double velocidadMaxima, Propulsion tipoPropulsion, Ciudad actual) {
-        super(capacidadCombustible, capacidadMaxPasajeros, velocidadMaxima, tipoPropulsion, true, actual, 6000,Clase.GOLD);
+
+    public Gold(int capacidadMaxPasajeros, Propulsion tipoPropulsion, Ciudad actual) {
+        super(capacidadMaxPasajeros, tipoPropulsion, true, actual, 6000,Clase.GOLD);
+
         this.conexionWifi = conexionWifi();
     }
 

@@ -91,6 +91,7 @@ public class AeroTaxi {
     public void agregarVueloExistente (Vuelo vuelo, Usuario usuario, int cantPasajeros){
         usuario.agregarVueloContratado(vuelo);
         vuelo.agregarPasajeros(usuario, cantPasajeros);
+        vuelo.setCostoTotal();
     }
 
     public void eliminarVuelo (Vuelo vuelo) { //Cambiarla para que haga baja logica
@@ -105,19 +106,19 @@ public class AeroTaxi {
     public void listarVuelos (){
         int i = 0;
         for (Vuelo vuelo : listaVuelos) {
-            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase() + "avion" + vuelo.getAvion());
+            System.out.println( i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
             i++;
         }
     }
 
     public void listarVuelosPorFecha (LocalDate fecha){
         int i = 0;
-        for (Vuelo vuelo : listaVuelos) {
-            if(vuelo.getFecha().isEqual(fecha)) {
-                System.out.println(i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
+            for (Vuelo vuelo : listaVuelos) {
+                if(vuelo.getFecha().isEqual(fecha)) {
+                    System.out.println(i + ". " + vuelo.getFecha() + " Origen: " + vuelo.getOrigen() + " Destino: " + vuelo.getDestino() + " Estado: " + vuelo.getEstado() + " Clase: " + vuelo.getClase());
+                }
+                i++;
             }
-            i++;
-        }
     }
 
     public boolean validarVuelo(Vuelo vuelo){
@@ -237,6 +238,7 @@ public class AeroTaxi {
         if(vuelo.cancelarVuelo(usuario)){
             res = true;
             usuario.eliminarVueloContratado(vuelo.getId());
+            vuelo.setEstado(-1);
         }
         return res;
     }

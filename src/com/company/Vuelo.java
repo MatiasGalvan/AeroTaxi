@@ -148,8 +148,14 @@ public class Vuelo{
 
     public double calcularCosto(){
         double res = 0;
-        res = (Ciudad.distanciaKM(origen, destino) * avion.getCostoKm()) + (cantPasajeros * 3500) + (avion.getTarifa());
+        res = ((Ciudad.distanciaKM(origen, destino) * avion.getCostoKm()) + (cantPasajeros * 3500) + (avion.getTarifa()));
         return  res;
+    }
+
+    public double costoPorCant(int cant){
+        double res = 0;
+        res = ((Ciudad.distanciaKM(origen, destino) * avion.getCostoKm()) + (3500 * cant) + (avion.getTarifa()));
+        return res;
     }
 
     @Override
